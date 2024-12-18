@@ -1,0 +1,453 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1734541411059-1
+      author: siamo
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_addresses
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: city
+                  type: VARCHAR(255)
+              - column:
+                  name: street
+                  type: VARCHAR(255)
+              - column:
+                  name: house
+                  type: VARCHAR(255)
+              - column:
+                  name: apartment
+                  type: VARCHAR(255)
+            tableName: addresses
+  - changeSet:
+      id: 1734541411059-2
+      author: siamo
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_appointments
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: client_id
+                  type: BIGINT
+              - column:
+                  name: master_id
+                  type: BIGINT
+              - column:
+                  name: appointment_date
+                  type: DATETIME
+              - column:
+                  name: status
+                  type: VARCHAR(255)
+              - column:
+                  name: service_id
+                  type: BIGINT
+            tableName: appointments
+  - changeSet:
+      id: 1734541411059-3
+      author: siamo
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_clients
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: user_id
+                  type: BIGINT
+              - column:
+                  name: birth_date
+                  type: DATE
+              - column:
+                  name: address_id
+                  type: BIGINT
+              - column:
+                  name: registration_date
+                  type: DATE
+            tableName: clients
+  - changeSet:
+      id: 1734541411059-4
+      author: siamo
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_masters
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: user_id
+                  type: BIGINT
+              - column:
+                  name: specialization
+                  type: VARCHAR(255)
+              - column:
+                  name: work_schedule
+                  type: VARCHAR(255)
+            tableName: masters
+  - changeSet:
+      id: 1734541411059-5
+      author: siamo
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_products
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+              - column:
+                  name: price
+                  type: DECIMAL
+              - column:
+                  name: stock_quantity
+                  type: INT
+              - column:
+                  name: supplier
+                  type: VARCHAR(255)
+            tableName: products
+  - changeSet:
+      id: 1734541411059-6
+      author: siamo
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_purchases
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: appointment_id
+                  type: BIGINT
+              - column:
+                  name: product_id
+                  type: BIGINT
+              - column:
+                  name: purchase_date
+                  type: DATETIME
+              - column:
+                  name: quantity
+                  type: INT
+              - column:
+                  name: total_amount
+                  type: DECIMAL
+              - column:
+                  name: service_id
+                  type: BIGINT
+              - column:
+                  name: review_id
+                  type: BIGINT
+            tableName: purchases
+  - changeSet:
+      id: 1734541411059-7
+      author: siamo
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_reviews
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: rating
+                  type: INT
+              - column:
+                  name: review_text
+                  type: VARCHAR(255)
+              - column:
+                  name: review_date
+                  type: DATETIME
+              - column:
+                  name: appointment_id
+                  type: BIGINT
+            tableName: reviews
+  - changeSet:
+      id: 1734541411059-8
+      author: siamo
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_services
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+              - column:
+                  name: price
+                  type: DECIMAL
+              - column:
+                  name: duration
+                  type: INT
+              - column:
+                  name: description
+                  type: VARCHAR(255)
+            tableName: services
+  - changeSet:
+      id: 1734541411059-9
+      author: siamo
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_user_roles
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+            tableName: user_roles
+  - changeSet:
+      id: 1734541411059-10
+      author: siamo
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_users
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: first_name
+                  type: VARCHAR(255)
+              - column:
+                  name: last_name
+                  type: VARCHAR(255)
+              - column:
+                  name: phone
+                  type: VARCHAR(255)
+              - column:
+                  name: email
+                  type: VARCHAR(255)
+              - column:
+                  name: photo
+                  type: VARCHAR(255)
+              - column:
+                  name: login
+                  type: VARCHAR(255)
+              - column:
+                  name: password
+                  type: VARCHAR(255)
+              - column:
+                  name: role_id
+                  type: BIGINT
+            tableName: users
+  - changeSet:
+      id: 1734541411059-11
+      author: siamo
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addUniqueConstraint:
+            columnNames: user_id
+            constraintName: uc_clients_user
+            tableName: clients
+  - changeSet:
+      id: 1734541411059-12
+      author: siamo
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addUniqueConstraint:
+            columnNames: user_id
+            constraintName: uc_masters_user
+            tableName: masters
+  - changeSet:
+      id: 1734541411059-13
+      author: siamo
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addUniqueConstraint:
+            columnNames: review_id
+            constraintName: uc_purchases_review
+            tableName: purchases
+  - changeSet:
+      id: 1734541411059-14
+      author: siamo
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: client_id
+            baseTableName: appointments
+            constraintName: FK_APPOINTMENTS_ON_CLIENT
+            referencedColumnNames: id
+            referencedTableName: clients
+  - changeSet:
+      id: 1734541411059-15
+      author: siamo
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: master_id
+            baseTableName: appointments
+            constraintName: FK_APPOINTMENTS_ON_MASTER
+            referencedColumnNames: id
+            referencedTableName: masters
+  - changeSet:
+      id: 1734541411059-16
+      author: siamo
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: service_id
+            baseTableName: appointments
+            constraintName: FK_APPOINTMENTS_ON_SERVICE
+            referencedColumnNames: id
+            referencedTableName: services
+  - changeSet:
+      id: 1734541411059-17
+      author: siamo
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: address_id
+            baseTableName: clients
+            constraintName: FK_CLIENTS_ON_ADDRESS
+            referencedColumnNames: id
+            referencedTableName: addresses
+  - changeSet:
+      id: 1734541411059-18
+      author: siamo
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: user_id
+            baseTableName: clients
+            constraintName: FK_CLIENTS_ON_USER
+            referencedColumnNames: id
+            referencedTableName: users
+  - changeSet:
+      id: 1734541411059-19
+      author: siamo
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: user_id
+            baseTableName: masters
+            constraintName: FK_MASTERS_ON_USER
+            referencedColumnNames: id
+            referencedTableName: users
+  - changeSet:
+      id: 1734541411059-20
+      author: siamo
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: appointment_id
+            baseTableName: purchases
+            constraintName: FK_PURCHASES_ON_APPOINTMENT
+            referencedColumnNames: id
+            referencedTableName: appointments
+  - changeSet:
+      id: 1734541411059-21
+      author: siamo
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: product_id
+            baseTableName: purchases
+            constraintName: FK_PURCHASES_ON_PRODUCT
+            referencedColumnNames: id
+            referencedTableName: products
+  - changeSet:
+      id: 1734541411059-22
+      author: siamo
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: review_id
+            baseTableName: purchases
+            constraintName: FK_PURCHASES_ON_REVIEW
+            referencedColumnNames: id
+            referencedTableName: reviews
+  - changeSet:
+      id: 1734541411059-23
+      author: siamo
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: service_id
+            baseTableName: purchases
+            constraintName: FK_PURCHASES_ON_SERVICE
+            referencedColumnNames: id
+            referencedTableName: services
+  - changeSet:
+      id: 1734541411059-24
+      author: siamo
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: appointment_id
+            baseTableName: reviews
+            constraintName: FK_REVIEWS_ON_APPOINTMENT
+            referencedColumnNames: id
+            referencedTableName: appointments
+  - changeSet:
+      id: 1734541411059-25
+      author: siamo
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: role_id
+            baseTableName: users
+            constraintName: FK_USERS_ON_ROLE
+            referencedColumnNames: id
+            referencedTableName: user_roles
+
