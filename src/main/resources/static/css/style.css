@@ -1,0 +1,80 @@
+.hero-section {
+    background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('../images/salon-bg.jpg');
+    background-size: cover;
+    background-position: center;
+    color: white;
+    padding: 100px 0;
+    margin-bottom: 50px;
+}
+
+.hero-section h1 {
+    font-size: 3.5rem;
+    margin-bottom: 20px;
+}
+
+.hero-section .lead {
+    font-size: 1.5rem;
+    margin-bottom: 30px;
+}
+
+.card {
+    transition: transform 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.navbar {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.rating {
+    color: #ffd700;
+    font-size: 1.2rem;
+}
+
+.profile-section {
+    background-color: #f8f9fa;
+    padding: 30px 0;
+    border-radius: 10px;
+    margin-bottom: 30px;
+}
+
+.appointment-card {
+    border-left: 4px solid #007bff;
+}
+
+.service-card {
+    height: 100%;
+}
+
+.service-card .card-body {
+    display: flex;
+    flex-direction: column;
+}
+
+.service-card .btn {
+    margin-top: auto;
+}
+
+.master-card img {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin: 0 auto 20px;
+}
+
+.review-card {
+    border-left: 4px solid #28a745;
+}
+/*.hidden {*/
+/*    display: none;*/
+/*}*/
+
+/*.dropdown {*/
+/*    display: block;*/
+/*    !* другие стили для выпадающего меню *!*/
+/*}*/

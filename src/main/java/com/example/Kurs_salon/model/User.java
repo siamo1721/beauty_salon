@@ -27,6 +27,12 @@ public class User implements UserDetails {
     @SequenceGenerator(sequenceName = "user_id_seq", name = "user_id_seq", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_id_seq")
     private Long id;
+
+    private String firstName;
+    private String lastName;
+    private String phone;
+    private String email;
+    private String photo;
     private String username;
     @JsonIgnore
     private String password;

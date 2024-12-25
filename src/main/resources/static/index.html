@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Салон красоты</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+        <a class="navbar-brand" href="/static">Beauty Salon</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/">Главная</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/services.html">Услуги</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/masters.html">Мастера</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/reviews.html">Отзывы</a>
+                </li>
+            </ul>
+                <div id="auth-buttons">
+                    <a href="/login.html" class="btn btn-outline-light me-2">Вход</a>
+                    <a href="/register.html" class="btn btn-light">Регистрация</a>
+                </div>
+
+            <div id="user-menu" style="display: none;">
+                <div class="dropdown">
+                    <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                        Личный кабинет
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="/profile.html">Профиль</a></li>
+                        <li><a class="dropdown-item" href="/appointments.html">Мои записи</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="#" onclick="handleLogout(); return false;">Выход</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<div class="hero-section">
+    <div class="container text-center">
+        <h1>Добро пожаловать в наш салон красоты</h1>
+        <p class="lead">Мы предлагаем широкий спектр услуг для вашей красоты и здоровья</p>
+        <a href="/appointment.html" class="btn btn-primary btn-lg">Записаться на прием</a>
+    </div>
+</div>
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Услуги</h5>
+                    <p class="card-text">Широкий выбор косметологических услуг для вашей красоты</p>
+                    <a href="/services.html" class="btn btn-primary">Подробнее</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Мастера</h5>
+                    <p class="card-text">Профессиональные мастера с большим опытом работы</p>
+                    <a href="/masters.html" class="btn btn-primary">Наши мастера</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Отзывы</h5>
+                    <p class="card-text">Отзывы наших довольных клиентов</p>
+                    <a href="/reviews.html" class="btn btn-primary">Читать отзывы</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="js/auth.js"></script>
+<script src="/js/login.js"></script>
+<script src="/js/userService.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', updateAuthUI);
+</script>
+</body>
+</html>

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Отзывы - Салон красоты</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+        <a class="navbar-brand" href="/">Beauty Salon</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/">Главная</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/services">Услуги</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/masters">Мастера</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="/reviews">Отзывы</a>
+                </li>
+            </ul>
+            <div id="auth-buttons">
+                <a href="/login" class="btn btn-outline-light me-2">Вход</a>
+                <a href="/register" class="btn btn-light">Регистрация</a>
+            </div>
+            <div id="user-menu" style="display: none;">
+                <div class="dropdown">
+                    <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                        Личный кабинет
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="/profile">Профиль</a></li>
+                        <li><a class="dropdown-item" href="/appointments">Мои записи</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="#" onclick="handleLogout(); return false;">Выход</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<div class="container mt-5">
+    <h2 class="mb-4">Отзывы наших клиентов</h2>
+    <div class="row" id="reviews-container">
+        <!-- Отзывы будут добавлены через JavaScript -->
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/reviews.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        updateAuthUI();
+        loadReviews();
+    });
+</script>
+</body>
+</html>
