@@ -10,6 +10,7 @@ import lombok.experimental.Accessors;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -34,6 +35,13 @@ public class User implements UserDetails {
     private String email;
     private String photo;
     private String username;
+    private LocalDate birthDate;
+
+    @ManyToOne
+    @JoinColumn(name = "address_id")
+    private Address address;
+
+    private LocalDate registrationDate;
     @JsonIgnore
     private String password;
     @JsonIgnore

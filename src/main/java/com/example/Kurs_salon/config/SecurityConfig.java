@@ -8,6 +8,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -26,7 +27,10 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .authorizeHttpRequests(auth -> auth
+                .sessionManagement(session -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+                );
+        http.authorizeHttpRequests(auth -> auth
                         // Публичные ресурсы - разрешаем доступ всем
                         .requestMatchers(
                                 "/",
@@ -46,7 +50,8 @@ public class SecurityConfig {
                                 "/api/auth/**",
                                 "/api/services/**",
                                 "/api/masters/**",
-                                "/api/reviews/**"
+                                "/api/reviews/**",
+                                "/api/appointments/my/**"
                         ).permitAll()
 
                         // Защищенные страницы
@@ -65,13 +70,13 @@ public class SecurityConfig {
                         )
                         .anyRequest().permitAll()
                 )
-                .formLogin(form -> form
-                        .loginPage("/login.html")
-                        .loginProcessingUrl("/api/auth/login")
-                        .defaultSuccessUrl("/", true)
-                        .failureUrl("/login.html?error=true")
-                        .permitAll()
-                )
+//                .formLogin(form -> form
+//                        .loginPage("/login.html")
+//                        .loginProcessingUrl("/api/auth/login")
+//                        .defaultSuccessUrl("/", true)
+//                        .failureUrl("/login.html?error=true")
+//                        .permitAll()
+//                )
                 .logout(logout -> logout
                         .logoutUrl("/api/auth/logout")
                         .logoutSuccessUrl("/")

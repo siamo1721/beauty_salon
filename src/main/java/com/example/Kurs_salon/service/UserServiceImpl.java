@@ -64,7 +64,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                 .setEnabled(true);
 
         user = userRepository.save(user);
-        userRolesRepository.save(new UserRole(null, UserAuthority.COSMETOLOGIST, user));
+        userRolesRepository.save(new UserRole(null, UserAuthority.MASTER, user));
     }
 
     @Transactional

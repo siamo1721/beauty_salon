@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface AppointmentRepository extends JpaRepository<Appointment, Long> {
     List<Appointment> findByMasterIdAndAppointmentDateBetween(Long masterId, LocalDateTime start, LocalDateTime end);
-    List<Appointment> findByClientId(Long clientId);
+    List<Appointment> findByUserId(Long userId);
 }

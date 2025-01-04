@@ -21,5 +21,6 @@ public class Master {
     private User user;
 
     private String specialization;
+
     private String workSchedule;
 }

@@ -6,13 +6,33 @@ document.addEventListener('DOMContentLoaded', function() {
         document.querySelector('select[name="serviceId"]').value = serviceId;
     }
 
-    loadMasters();
-    initializeAppointmentForm();
+    loadServices(); // Загружаем список услуг
+    loadMasters();  // Загружаем список мастеров
+    initializeAppointmentForm();  // Инициализируем форму записи
 });
 
+// Функция для загрузки списка услуг
+async function loadServices() {
+    try {
+        const response = await fetch('/api/services'); // Предполагаем, что этот URL возвращает список услуг
+        const services = await response.json();
+        const select = document.querySelector('select[name="serviceId"]');
+
+        services.forEach(service => {
+            const option = document.createElement('option');
+            option.value = service.id;
+            option.textContent = `${service.name} - ${service.price}₽ - ${service.duration} мин`;
+            select.appendChild(option);
+        });
+    } catch (error) {
+        console.error('Ошибка при загрузке услуг:', error);
+    }
+}
+
+// Функция для загрузки списка мастеров
 async function loadMasters() {
     try {
-        const response = await fetch('/api/masters');
+        const response = await fetch('/api/masters'); // Этот URL возвращает список мастеров
         const masters = await response.json();
         const select = document.querySelector('select[name="masterId"]');
 
@@ -27,6 +47,7 @@ async function loadMasters() {
     }
 }
 
+// Функция для инициализации формы записи
 function initializeAppointmentForm() {
     const form = document.getElementById('appointmentForm');
     form.addEventListener('submit', async (event) => {

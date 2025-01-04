@@ -15,7 +15,7 @@ import java.util.Arrays;
 @Slf4j
 public class ServiceLoggingAspect {
 
-    @Pointcut("execution(* com.example.kurs.service..*(..))")
+    @Pointcut("execution(* com.example.Kurs_salon.service..*(..))")
     public void serviceMethods() {}
 
     @Before("serviceMethods()")

@@ -6,8 +6,8 @@ import org.springframework.security.core.GrantedAuthority;
 @Getter
 public enum UserAuthority implements GrantedAuthority {
     ADMIN,
-    COSMETOLOGIST,
     SYSTEM_ADMIN,
+    MASTER,
     CLIENT;
 
     @Override

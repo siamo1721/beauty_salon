@@ -1,55 +1,63 @@
-// Check authentication status
-async function checkAuth() {
-    try {
-        const response = await fetch('/api/auth/check', {
-            credentials: 'include'
-        });
-        if (!response.ok) {
-            return false;
-        }
-        const data = await response.json();
-        return data.authenticated;
-    } catch (error) {
-        console.error('Authentication check error:', error);
-        return false;
-    }
-}
+// // Check authentication status
+// async function checkAuth() {
+//     try {
+//         const response = await fetch('/api/auth/check', {
+//             credentials: 'include'
+//         });
+//         if (!response.ok) {
+//             return false;
+//         }
+//         const data = await response.json();
+//         return data.authenticated;
+//     } catch (error) {
+//         console.error('Authentication check error:', error);
+//         return false;
+//     }
+// }
 
-// Handle login
 async function handleLogin(event) {
     event.preventDefault();
-    const form = event.target;
-    const formData = new FormData(form);
+
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
+
+    console.log('Attempting login...'); // Отладочный вывод
 
     try {
         const response = await fetch('/api/auth/login', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
             },
             credentials: 'include',
             body: JSON.stringify({
-                username: formData.get('username'),
-                password: formData.get('password')
+                username: username,
+                password: password
             })
         });
 
-        if (response.ok) {
-            // const dropdownMenu = document.getElementById('dropdown-menu');
-            // if (dropdownMenu) {
-            //     dropdownMenu.classList.remove('hidden'); // Показываем меню
-            //     dropdownMenu.classList.add('dropdown'); // Добавляем класс оформления
-            // }
+        console.log('Response status:', response.status); // Отладочный вывод
+
+        const data = await response.json();
+        console.log('Response data:', data); // Отладочный вывод
+
+        if (response.ok && data.authenticated) {
+            console.log('Login successful, redirecting...'); // Отладочный вывод
             window.location.href = '/';
         } else {
-            const error = await response.json();
-            alert(error.message || 'Invalid username or password');
+            const errorMessage = data.message || 'Неверное имя пользователя или пароль';
+            console.error('Login failed:', errorMessage); // Отладочный вывод
+            alert(errorMessage);
         }
     } catch (error) {
         console.error('Login error:', error);
-        alert('An error occurred during login');
+        alert('Произошла ошибка при входе');
     }
 }
+
+
+
 
 // Handle registration
 async function handleRegister(event) {
@@ -119,21 +127,22 @@ async function handleLogout() {
     }
 }
 
-// Check authentication for appointment
-function checkAuthForAppointment(event) {
-    event.preventDefault();
-    const isAuthenticated = checkAuth();
+// // Check authentication for appointment
+// function checkAuthForAppointment(event) {
+//     event.preventDefault();
+//     const isAuthenticated = checkAuth();
+//
+//     if (!isAuthenticated) {
+//         window.location.href = '/login.html';
+//         return false;
+//     }
+//     return true;
+// }
 
-    if (!isAuthenticated) {
-        window.location.href = '/login.html';
-        return false;
-    }
-    return true;
-}
-
-// Update UI based on authentication status
 async function updateAuthUI() {
     const isAuthenticated = await checkAuth();
+    console.log('Authentication status:', isAuthenticated); // Для отладки
+
     const authButtons = document.getElementById('auth-buttons');
     const userMenu = document.getElementById('user-menu');
 
@@ -143,13 +152,38 @@ async function updateAuthUI() {
     }
 
     if (isAuthenticated) {
+        console.log('User is authenticated, updating UI...'); // Для отладки
         authButtons.style.display = 'none';
         userMenu.style.display = 'block';
     } else {
+        console.log('User is not authenticated, updating UI...'); // Для отладки
         authButtons.style.display = 'block';
         userMenu.style.display = 'none';
     }
 }
+
+async function checkAuth() {
+    try {
+        const response = await fetch('/api/auth/check', {
+            method: 'GET',
+            credentials: 'include',
+            headers: {
+                'Accept': 'application/json'
+            }
+        });
+
+        if (!response.ok) {
+            return false;
+        }
+
+        const data = await response.json();
+        return data.authenticated === true;
+    } catch (error) {
+        console.error('Authentication check error:', error);
+        return false;
+    }
+}
+
 
 // Export functions for global use
 window.handleLogin = handleLogin;
@@ -158,4 +192,13 @@ window.handleLogout = handleLogout;
 window.updateAuthUI = updateAuthUI;
 
 // Update UI on page load
-document.addEventListener('DOMContentLoaded', updateAuthUI);
+// document.addEventListener('DOMContentLoaded', updateAuthUI);
+// Добавляем в конец файла
+document.addEventListener('DOMContentLoaded', async () => {
+    await updateAuthUI();
+});
+
+// Добавляем обработчик для случаев, когда страница уже загружена
+if (document.readyState === 'complete') {
+    updateAuthUI();
+}
