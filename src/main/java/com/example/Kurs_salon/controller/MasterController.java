@@ -1,6 +1,6 @@
 package com.example.Kurs_salon.controller;
 
-import com.example.Kurs_salon.dto.MasterRequestDTO;
+import com.example.Kurs_salon.dto.MasterDto;
 import com.example.Kurs_salon.model.Master;
 import com.example.Kurs_salon.model.User;
 import com.example.Kurs_salon.repository.MasterRepository;
@@ -20,7 +20,7 @@ public class MasterController {
     private final UserRepository userRepository;
 
     @PostMapping
-    public ResponseEntity<?> createMaster(@RequestBody MasterRequestDTO request) {
+    public ResponseEntity<?> createMaster(@RequestBody MasterDto request) {
         // Ищем пользователя по ID
         User user = userRepository.findById(request.getUserId())
                 .orElseThrow(() -> new RuntimeException("User not found"));

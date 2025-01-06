@@ -54,9 +54,16 @@ public class RegistrationController {
                     SecurityContextHolder.getContext()
             );
 
+            // Извлечение ролей пользователя
+            var authorities = authentication.getAuthorities();
+            var roles = authorities.stream()
+                    .map(authority -> authority.getAuthority())
+                    .toList();
+
             return ResponseEntity.ok().body(Map.of(
                     "authenticated", true,
-                    "username", authentication.getName()
+                    "username", authentication.getName(),
+                    "roles", roles
             ));
         } catch (AuthenticationException e) {
             return ResponseEntity.status(401).body(Map.of(
@@ -65,7 +72,6 @@ public class RegistrationController {
             ));
         }
     }
-
 
 
     @GetMapping("/check")

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Системный администратор</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/system-admin.css" rel="stylesheet">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-success">
+    <div class="container">
+        <a class="navbar-brand" href="/system-admin/index.html">Управление расписанием</a>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="/system-admin/appointments">Записи</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container mt-4">
+    <h1>Все записи</h1>
+    <div id="all-appointments"></div>
+</div>
+
+<!-- Модальное окно для редактирования записи -->
+<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editModalLabel">Редактировать запись</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editForm" onsubmit="saveAppointment(event)">
+                    <input type="hidden" name="id">
+                    <div class="mb-3">
+                        <label for="appointmentDate" class="form-label">Дата и время</label>
+                        <input type="datetime-local" class="form-control" id="appointmentDate" name="appointmentDate" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="serviceId" class="form-label">ID услуги</label>
+                        <input type="number" class="form-control" id="serviceId" name="serviceId" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="userId" class="form-label">ID клиента</label>
+                        <input type="number" class="form-control" id="userId" name="userId" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="masterId" class="form-label">ID мастера</label>
+                        <input type="number" class="form-control" id="masterId" name="masterId" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Сохранить изменения</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/system-admin/dashboard.js"></script>
+</body>
+</html>

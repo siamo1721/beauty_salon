@@ -2,15 +2,7 @@ package com.example.Kurs_salon.model;
 
 import com.example.Kurs_salon.model.UserAuthority;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.SequenceGenerator;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 
 @Getter
@@ -26,7 +18,7 @@ public class UserRole {
     @SequenceGenerator(name = "user_role_id_seq", sequenceName = "user_role_id_seq", allocationSize = 1)
     private Long id;
 
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     private UserAuthority userAuthority;
 
     @JsonIgnore

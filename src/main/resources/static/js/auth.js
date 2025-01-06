@@ -1,27 +1,8 @@
-// // Check authentication status
-// async function checkAuth() {
-//     try {
-//         const response = await fetch('/api/auth/check', {
-//             credentials: 'include'
-//         });
-//         if (!response.ok) {
-//             return false;
-//         }
-//         const data = await response.json();
-//         return data.authenticated;
-//     } catch (error) {
-//         console.error('Authentication check error:', error);
-//         return false;
-//     }
-// }
-
 async function handleLogin(event) {
     event.preventDefault();
 
     const username = document.getElementById('username').value;
     const password = document.getElementById('password').value;
-
-    console.log('Attempting login...'); // Отладочный вывод
 
     try {
         const response = await fetch('/api/auth/login', {
@@ -37,17 +18,23 @@ async function handleLogin(event) {
             })
         });
 
-        console.log('Response status:', response.status); // Отладочный вывод
-
         const data = await response.json();
-        console.log('Response data:', data); // Отладочный вывод
 
         if (response.ok && data.authenticated) {
-            console.log('Login successful, redirecting...'); // Отладочный вывод
-            window.location.href = '/';
+            // Проверяем роль пользователя
+            const roles = data.roles || [];
+            if (roles.includes('ADMIN')) {
+                window.location.href = '/admin/index.html';
+            }
+            else if (roles.includes('MASTER')) {
+                window.location.href = '/master/index.html';}
+            else if (roles.includes('SYSTEM_ADMIN')) {
+                window.location.href = '/system-admin/index.html';}
+            else {
+                window.location.href = '/';
+            }
         } else {
             const errorMessage = data.message || 'Неверное имя пользователя или пароль';
-            console.error('Login failed:', errorMessage); // Отладочный вывод
             alert(errorMessage);
         }
     } catch (error) {
@@ -55,8 +42,6 @@ async function handleLogin(event) {
         alert('Произошла ошибка при входе');
     }
 }
-
-
 
 
 // Handle registration
@@ -127,17 +112,6 @@ async function handleLogout() {
     }
 }
 
-// // Check authentication for appointment
-// function checkAuthForAppointment(event) {
-//     event.preventDefault();
-//     const isAuthenticated = checkAuth();
-//
-//     if (!isAuthenticated) {
-//         window.location.href = '/login.html';
-//         return false;
-//     }
-//     return true;
-// }
 
 async function updateAuthUI() {
     const isAuthenticated = await checkAuth();

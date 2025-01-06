@@ -36,11 +36,7 @@ public class AppointmentController {
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime end) {
         return ResponseEntity.ok(appointmentService.getMasterSchedule(masterId, start, end));
     }
-    
-//    @GetMapping("/client/{clientId}")
-//    public ResponseEntity<List<Appointment>> getClientAppointments(@PathVariable Long clientId) {
-//        return ResponseEntity.ok(appointmentService.getClientAppointments(clientId));
-//    }
+
     @GetMapping("/my")
     public ResponseEntity<List<Appointment>> getCurrentUserAppointments(
             @AuthenticationPrincipal User currentUser

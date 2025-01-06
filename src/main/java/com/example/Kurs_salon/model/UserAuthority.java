@@ -1,5 +1,6 @@
 package com.example.Kurs_salon.model;
 
+
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 
