@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
     loadUserProfile();
     loadUserAppointments();
+    document.getElementById('photo-upload').addEventListener('change', uploadPhoto);
 });
 
 async function loadUserProfile() {
@@ -34,6 +35,7 @@ function displayProfile(profile) {
 
     profileContainer.innerHTML = `
         <div class="card">
+            <img src="/api/users/${profile.id}/photo" class="card-img-top" alt="Фото профиля" onerror="this.src='/img/default-avatar.jpg'">
             <div class="card-body">
                 <h3 class="card-title">${profile.firstName} ${profile.lastName}</h3>
                 <p class="card-text">
@@ -46,6 +48,33 @@ function displayProfile(profile) {
     `;
 }
 
+async function uploadPhoto(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const formData = new FormData();
+    formData.append('file', file);
+
+    try {
+        const response = await fetch(`/api/users/${getCurrentUserId()}/photo`, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            },
+            body: formData
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        alert('Фото успешно загружено');
+        loadUserProfile(); // Перезагрузим профиль, чтобы отобразить новое фото
+    } catch (error) {
+        console.error('Ошибка при загрузке фото:', error);
+        alert('Не удалось загрузить фото');
+    }
+}
 async function loadUserAppointments() {
     try {
         const response = await fetch('/api/appointments/my', {

@@ -37,6 +37,10 @@ dependencies {
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 	testImplementation ("org.springframework.boot:spring-boot-starter-test")
 	testImplementation ("com.h2database:h2")
+	implementation ("com.itextpdf:itextpdf:5.5.13.3")
+	implementation ("org.apache.pdfbox:pdfbox:3.0.0")
+
+
 }
 
 tasks.withType<Test> {

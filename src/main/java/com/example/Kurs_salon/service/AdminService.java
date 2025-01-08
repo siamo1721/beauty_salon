@@ -1,19 +1,20 @@
 package com.example.Kurs_salon.service;
 
+import com.example.Kurs_salon.dto.AddressDto;
 import com.example.Kurs_salon.dto.MasterDto;
 import com.example.Kurs_salon.dto.ServiceDto;
 import com.example.Kurs_salon.dto.UserDto;
 import com.example.Kurs_salon.model.*;
-import com.example.Kurs_salon.repository.MasterRepository;
-import com.example.Kurs_salon.repository.ServiceRepository;
-import com.example.Kurs_salon.repository.UserRepository;
-import com.example.Kurs_salon.repository.UserRolesRepository;
+import com.example.Kurs_salon.repository.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static com.example.Kurs_salon.model.UserAuthority.MASTER;
 
 @Service
 @RequiredArgsConstructor
@@ -22,8 +23,8 @@ public class AdminService {
     private final UserRolesRepository userRolesRepository;
     private final MasterRepository masterRepository;
     private final ServiceRepository serviceRepository;
-    private final ReportService reportService;
-
+    private final AddressRepository addressRepository;
+    private final PasswordEncoder passwordEncoder;
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
@@ -37,9 +38,29 @@ public class AdminService {
         user.setLastName(userDto.getLastName());
         user.setEmail(userDto.getEmail());
         if (userDto.getPassword() != null && !userDto.getPassword().isEmpty()) {
-            user.setPassword(userDto.getPassword()); // Removed passwordEncoder
+            user.setPassword(passwordEncoder.encode(userDto.getPassword()));
         }
-        return convertToUserDto(userRepository.save(user)); // Changed to a generic convert method
+        user.setUsername(userDto.getUsername());
+        user.setPhone(userDto.getPhone());
+        user.setBirthDate(userDto.getBirthDate());
+        user.setRegistrationDate(userDto.getRegistrationDate());
+
+        Address address = user.getAddress();
+
+        if (address == null) {
+            address = new Address();
+        }
+
+        address.setStreet(userDto.getAddress().getStreet());
+        address.setCity(userDto.getAddress().getCity());
+        address.setHouse(userDto.getAddress().getHouse());
+        address.setApartment(userDto.getAddress().getApartment());
+
+        address = addressRepository.save(address);
+        user.setAddress(address);
+
+        return convertToUserDto(userRepository.save(user));
+
     }
 
     @Transactional
@@ -64,9 +85,11 @@ public class AdminService {
     }
 
     @Transactional
-    public MasterDto addMaster(MasterDto masterDto) {
+    public MasterDto addMaster(MasterDto masterDto ) {
         User user = userRepository.findById(masterDto.getUserId())
                 .orElseThrow(() -> new RuntimeException("Пользователь не найден"));
+        UserRole masterRole = new UserRole(null, MASTER, user);
+        userRolesRepository.save(masterRole);
         Master master = new Master();
         master.setUser(user);
         master.setSpecialization(masterDto.getSpecialization());
@@ -99,6 +122,7 @@ public class AdminService {
         service.setName(serviceDto.getName());
         service.setPrice(serviceDto.getPrice());
         service.setDuration(serviceDto.getDuration());
+        service.SetDescription(serviceDto.getDescription());
         return convertToServiceDto(serviceRepository.save(service));
     }
 
@@ -109,6 +133,7 @@ public class AdminService {
         service.setName(serviceDto.getName());
         service.setPrice(serviceDto.getPrice());
         service.setDuration(serviceDto.getDuration());
+        service.SetDescription(serviceDto.getDescription());
         return convertToServiceDto(serviceRepository.save(service));
     }
 
@@ -117,17 +142,31 @@ public class AdminService {
         serviceRepository.deleteById(serviceId);
     }
 
-    public byte[] generateServicesReport(String startDate, String endDate) {
-        return reportService.generateServicesReport(startDate, endDate);
-    }
+
     private UserDto convertToUserDto(User user) {
         return new UserDto(
                 user.getId(),
+                user.getUsername(),
+                user.getPassword(),
                 user.getFirstName(),
                 user.getLastName(),
-                user.getEmail()
+                user.getEmail(),
+                user.getPhone(),
+                user.getBirthDate(),
+                user.getRegistrationDate(),
+                user.getAddress() == null? null : convertToAddressDto(user.getAddress())
 
         );
+    }
+    private AddressDto convertToAddressDto(Address address) {
+        return new AddressDto(
+                address.getId(),
+                address.getStreet(),
+                address.getCity(),
+                address.getHouse(),
+                address.getApartment()
+        );
+
     }
 
     private MasterDto convertToMasterDto(Master master) {
@@ -146,7 +185,8 @@ public class AdminService {
                 service.getId(),
                 service.getName(),
                 service.getPrice(),
-                service.getDuration()
+                service.getDuration(),
+                service.getDescription()
         );
     }
 

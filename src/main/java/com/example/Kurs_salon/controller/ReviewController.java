@@ -1,5 +1,6 @@
 package com.example.Kurs_salon.controller;
 
+import com.example.Kurs_salon.dto.ReviewRequest;
 import com.example.Kurs_salon.model.Review;
 import com.example.Kurs_salon.service.ReviewService;
 import lombok.RequiredArgsConstructor;
@@ -12,15 +13,24 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ReviewController {
     private final ReviewService reviewService;
-    
-    @PostMapping
-    public ResponseEntity<Review> createReview(@RequestBody Review review) {
-        return ResponseEntity.ok(reviewService.createReview(review));
+
+    @PostMapping("create")
+    public ResponseEntity<Review> createReview(@RequestBody ReviewRequest reviewRequest) {
+        Review review = new Review();
+        review.setRating(reviewRequest.getRating());
+        review.setReviewText(reviewRequest.getReviewText());
+
+        Review createdReview = reviewService.createReview(reviewRequest.getAppointmentId(), review);
+        return ResponseEntity.ok(createdReview);
     }
     
     @GetMapping("/{id}")
     public ResponseEntity<Review> getReview(@PathVariable Long id) {
         return ResponseEntity.ok(reviewService.getReviewById(id));
+    }
+    @GetMapping
+    public ResponseEntity<List<Review>> getAllReviews() {
+        return ResponseEntity.ok(reviewService.getAllReviews());
     }
     
     @GetMapping("/appointment/{appointmentId}")

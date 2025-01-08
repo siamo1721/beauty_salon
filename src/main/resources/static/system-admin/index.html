@@ -16,6 +16,10 @@
                     <a class="nav-link" href="/system-admin/appointments">Записи</a>
                 </li>
             </ul>
+
+        </div>
+        <div id="auth-buttons">
+            <a class="dropdown-item" href="/login.html" onclick="handleLogout(); return false;">Выход</a>
         </div>
     </div>
 </nav>
@@ -25,41 +29,50 @@
     <div id="all-appointments"></div>
 </div>
 
-<!-- Модальное окно для редактирования записи -->
-<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+<div class="modal fade" id="editModal" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="editModalLabel">Редактировать запись</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <h5 class="modal-title">Редактировать запись</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
                 <form id="editForm" onsubmit="saveAppointment(event)">
                     <input type="hidden" name="id">
+
                     <div class="mb-3">
-                        <label for="appointmentDate" class="form-label">Дата и время</label>
-                        <input type="datetime-local" class="form-control" id="appointmentDate" name="appointmentDate" required>
+                        <label class="form-label">Дата и время</label>
+                        <input type="datetime-local" name="appointmentDate" class="form-control" required>
                     </div>
+
                     <div class="mb-3">
-                        <label for="serviceId" class="form-label">ID услуги</label>
-                        <input type="number" class="form-control" id="serviceId" name="serviceId" required>
+                        <label class="form-label">Услуга</label>
+                        <select name="serviceId" id="serviceDropdown" class="form-control" required></select>
                     </div>
+
                     <div class="mb-3">
-                        <label for="userId" class="form-label">ID клиента</label>
-                        <input type="number" class="form-control" id="userId" name="userId" required>
+                        <label class="form-label">Клиент</label>
+                        <select name="userId" id="userDropdown" class="form-control" required></select>
                     </div>
+
                     <div class="mb-3">
-                        <label for="masterId" class="form-label">ID мастера</label>
-                        <input type="number" class="form-control" id="masterId" name="masterId" required>
+                        <label class="form-label">Мастер</label>
+                        <select name="masterId" id="masterDropdown" class="form-control" required></select>
                     </div>
-                    <button type="submit" class="btn btn-primary">Сохранить изменения</button>
+
+                    <button type="submit" class="btn btn-primary">Сохранить</button>
                 </form>
             </div>
         </div>
     </div>
 </div>
 
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
 <script src="/system-admin/dashboard.js"></script>
 </body>
 </html>
+
+
+

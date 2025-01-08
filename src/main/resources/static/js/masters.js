@@ -18,13 +18,13 @@ function displayMasters(masters) {
         masterCard.innerHTML = `
             <div class="card master-card h-100">
                 <div class="card-body text-center">
-                    <img src="${master.user.photo || 'images/default-avatar.jpg'}" 
+                    <img src="${master.user.photo || 'img/default-avatar.jpg'}" 
                          alt="${master.user.firstName} ${master.user.lastName}"
                          class="mb-3">
                     <h5 class="card-title">${master.user.firstName} ${master.user.lastName}</h5>
                     <p class="card-text">
                         <strong>Специализация:</strong> ${master.specialization}<br>
-                        <strong>График работы:</strong> ${master.workSchedule}
+                        <strong>График работы:</strong> ${master.work_schedule}
                     </p>
                     <button onclick="bookMaster(${master.id})" class="btn btn-primary">
                         Записаться

@@ -14,4 +14,5 @@ public class ServiceDto {
     private String name;
     private BigDecimal price;
     private Integer duration;
+    private String description;
 }

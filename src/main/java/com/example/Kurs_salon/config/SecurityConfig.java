@@ -93,6 +93,7 @@ package com.example.Kurs_salon.config;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -126,23 +127,31 @@ public class SecurityConfig {
                                 "/images/**",
                                 "/login.html",
                                 "/register.html",
-                                "/api/auth/**"
+                                "/api/auth/**",
+                                "/appointments.html"
                         ).permitAll()
 
                         // Админ панель
                         .requestMatchers("/admin/**", "/api/admin/**").hasAuthority("ADMIN")
 
                         // Системный админ
-                        .requestMatchers("/system-admin/**", "/api/system-admin/**").hasAuthority("SYSTEM_ADMIN")
+                        .requestMatchers("/system-admin/**", "/api/system-admin/**").hasAnyAuthority("SYSTEM_ADMIN","ADMIN")
 
                         // Мастер
-                        .requestMatchers("/master/**", "/api/master/**").hasAuthority("MASTER")
+                        .requestMatchers("/master/**", "/api/master/**").hasAnyAuthority("MASTER", "SYSTEM_ADMIN","ADMIN")
 
                         // Клиент
-                        .requestMatchers("/profile/**", "/api/appointments/**").hasAuthority("CLIENT")
+                        .requestMatchers("/profile/**").hasAnyAuthority("CLIENT","MASTER", "SYSTEM_ADMIN","ADMIN")
 
                         // Общие разделы для авторизованных пользователей
-                        .requestMatchers("/services.html", "/masters.html").authenticated()
+                        .requestMatchers("/services.html", "/masters.html","/reviews.html","/api/masters").permitAll()
+
+                        .requestMatchers(HttpMethod.GET, "/api/masters/**", "api/services/**" ,"/api/reviews").permitAll()
+
+                        .requestMatchers(HttpMethod.GET, "/api/appointments/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/appointments/**").permitAll()
+                        .requestMatchers(HttpMethod.PUT, "/api/appointments/**").hasAnyAuthority("CLIENT","MASTER", "SYSTEM_ADMIN","ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/api/appointments/**").hasAnyAuthority("CLIENT","MASTER", "SYSTEM_ADMIN","ADMIN")
 
                         .anyRequest().authenticated()
                 )

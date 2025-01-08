@@ -7,11 +7,15 @@ import com.example.Kurs_salon.dto.UserRoleUpdateDto;
 import com.example.Kurs_salon.model.User;
 import com.example.Kurs_salon.model.UserAuthority;
 import com.example.Kurs_salon.service.AdminService;
+import com.example.Kurs_salon.service.PdfGenerationService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -20,6 +24,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AdminController {
     private final AdminService adminService;
+    private final PdfGenerationService pdfGenerationService;
 
     @GetMapping("/users")
     public ResponseEntity<List<User>> getAllUsers() {
@@ -84,14 +89,23 @@ public class AdminController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/reports/services")
-    public ResponseEntity<byte[]> getServicesReport(
-            @RequestParam String startDate,
-            @RequestParam String endDate) {
-        byte[] report = adminService.generateServicesReport(startDate, endDate);
+    @GetMapping("/reports/procedures")
+    public ResponseEntity<byte[]> getProceduresReport(
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDateTime startDate,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDateTime endDate) {
+        byte[] report = pdfGenerationService.generateProceduresReport(startDate, endDate);
         return ResponseEntity.ok()
                 .header("Content-Type", "application/pdf")
-                .header("Content-Disposition", "attachment; filename=services-report.pdf")
+                .header("Content-Disposition", "attachment; filename=procedures-report.pdf")
+                .body(report);
+    }
+
+    @GetMapping("/reports/clients")
+    public ResponseEntity<byte[]> getClientsReport() {
+        byte[] report = pdfGenerationService.generateClientsReport();
+        return ResponseEntity.ok()
+                .header("Content-Type", "application/pdf")
+                .header("Content-Disposition", "attachment; filename=clients-report.pdf")
                 .body(report);
     }
 }

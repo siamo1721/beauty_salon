@@ -7,4 +7,5 @@ import java.util.Optional;
 @Repository
 public interface MasterRepository extends JpaRepository<Master, Long> {
     Optional<Master> findByUserUsername(String username);
+    Optional<Master> findByUser_FirstNameAndUser_LastName(String firstName, String lastName);
 }

@@ -2,6 +2,9 @@ package com.example.Kurs_salon.service;
 
 import com.example.Kurs_salon.dto.AppointmentUpdateDto;
 import com.example.Kurs_salon.model.Appointment;
+import com.example.Kurs_salon.model.Master;
+import com.example.Kurs_salon.model.Servicee;
+import com.example.Kurs_salon.model.User;
 import com.example.Kurs_salon.repository.AppointmentRepository;
 import com.example.Kurs_salon.repository.MasterRepository;
 import com.example.Kurs_salon.repository.ServiceRepository;
@@ -20,7 +23,6 @@ public class SystemAdminService {
     private final UserRepository userRepository;
     private final MasterRepository masterRepository;
     private final ServiceRepository serviceRepository;
-    private final ReportService reportService;
 
     public List<Appointment> getAllAppointments() {
         return appointmentRepository.findAll();
@@ -32,21 +34,37 @@ public class SystemAdminService {
 
     @Transactional
     public Appointment updateAppointment(Long id, AppointmentUpdateDto updateDto) {
+        System.out.println("Получен DTO: " + updateDto);
+
         Appointment appointment = appointmentRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Запись не найдена"));
 
+        System.out.println("Найдена запись: " + appointment);
+
         appointment.setAppointmentDate(updateDto.getAppointmentDate());
-        appointment.setUser(userRepository.findById(updateDto.getUserId())
-                .orElseThrow(() -> new RuntimeException("Пользователь не найден")));
-        appointment.setMaster(masterRepository.findById(updateDto.getMasterId())
-                .orElseThrow(() -> new RuntimeException("Мастер не найден")));
-        appointment.setServicee(serviceRepository.findById(updateDto.getServiceId())
-                .orElseThrow(() -> new RuntimeException("Услуга не найдена")));
+
+        User user = userRepository.findByFirstNameAndLastName(
+                updateDto.getUserFirstName(),
+                updateDto.getUserLastName()
+        ).orElseThrow(() -> new RuntimeException("Пользователь не найден"));
+        System.out.println("Найден пользователь: " + user);
+        appointment.setUser(user);
+
+        Master master = masterRepository.findByUser_FirstNameAndUser_LastName(
+                updateDto.getMasterFirstName(),
+                updateDto.getMasterLastName()
+        ).orElseThrow(() -> new RuntimeException("Мастер не найден"));
+        System.out.println("Найден мастер: " + master);
+        appointment.setMaster(master);
+
+        Servicee service = serviceRepository.findByName(updateDto.getServiceName())
+                .orElseThrow(() -> new RuntimeException("Услуга не найдена"));
+        System.out.println("Найдена услуга: " + service);
+        appointment.setServicee(service);
 
         return appointmentRepository.save(appointment);
     }
 
-    public byte[] generateMastersScheduleReport() {
-        return reportService.generateMastersScheduleReport();
-    }
+
+
 }

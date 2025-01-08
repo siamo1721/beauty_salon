@@ -10,7 +10,7 @@
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container">
-        <a class="navbar-brand" href="/static">Beauty Salon</a>
+        <a class="navbar-brand" href="/">Beauty Salon</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -41,7 +41,7 @@
                     </button>
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item" href="/profile.html">Профиль</a></li>
-                        <li><a class="dropdown-item" href="/appointments.html">Мои записи</a></li>
+
                         <li><hr class="dropdown-divider"></li>
                         <li><a class="dropdown-item" href="#" onclick="handleLogout(); return false;">Выход</a></li>
                     </ul>
@@ -98,6 +98,7 @@
     document.addEventListener('DOMContentLoaded', async () => {
         await updateAuthUI();
     });
+
 </script>
 
 </body>

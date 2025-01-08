@@ -6,6 +6,7 @@ import com.example.Kurs_salon.model.Master;
 import com.example.Kurs_salon.model.User;
 import com.example.Kurs_salon.repository.AppointmentRepository;
 import com.example.Kurs_salon.repository.MasterRepository;
+import com.example.Kurs_salon.repository.ReviewRepository;
 import com.example.Kurs_salon.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.security.core.context.SecurityContext;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
@@ -25,6 +27,7 @@ public class MasterRoleService {
     private final AppointmentRepository appointmentRepository;
     private final MasterRepository masterRepository;
     private final UserRepository userRepository;
+    private final ReviewRepository reviewRepository;
 
     public List<Appointment> getTodayAppointments() {
         Master currentMaster = getCurrentMaster();
@@ -58,10 +61,33 @@ public class MasterRoleService {
         return appointmentRepository.save(appointment);
     }
 
+    @Transactional
     public MasterStatistics getMasterStatistics() {
         Master currentMaster = getCurrentMaster();
-        // Реализация подсчета статистики
-        return new MasterStatistics();
+
+        // Подсчет общего количества записей
+        int totalAppointments = appointmentRepository.countByMaster(currentMaster);
+
+        // Подсчет завершенных записей
+        int completedAppointments = appointmentRepository.countByMasterAndStatus(currentMaster, "COMPLETED");
+
+        // Подсчет общего заработка
+        BigDecimal totalEarnings = appointmentRepository.sumEarningsByMaster(currentMaster);
+
+        // Подсчет среднего рейтинга
+        Double averageRating = reviewRepository.calculateAverageRatingForMaster(currentMaster);
+        if (averageRating == null) {
+            averageRating = 0.0; // Если нет отзывов, рейтинг 0
+        }
+
+        // Формирование объекта статистики
+        MasterStatistics statistics = new MasterStatistics();
+        statistics.setTotalAppointments(totalAppointments);
+        statistics.setCompletedAppointments(completedAppointments);
+        statistics.setTotalEarnings(totalEarnings != null ? totalEarnings : BigDecimal.ZERO);
+        statistics.setAverageRating(averageRating);
+
+        return statistics;
     }
 
     private Master getCurrentMaster() {

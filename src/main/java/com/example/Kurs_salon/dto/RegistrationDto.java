@@ -10,6 +10,7 @@ public class RegistrationDto {
     private String lastName;
     private String email;
     private String phone;
+    private String PhotoPath;
     private String birthDate;
     private AddressDto address;
 }

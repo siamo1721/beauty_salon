@@ -33,15 +33,17 @@ public class User implements UserDetails {
     private String lastName;
     private String phone;
     private String email;
-    private String photo;
+    @Column(name = "photo_path")
+    private String photoPath;
     private String username;
     private LocalDate birthDate;
 
+
+
+    private LocalDate registrationDate;
     @ManyToOne
     @JoinColumn(name = "address_id")
     private Address address;
-
-    private LocalDate registrationDate;
     @JsonIgnore
     private String password;
     @JsonIgnore

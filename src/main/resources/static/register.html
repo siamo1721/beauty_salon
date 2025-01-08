@@ -49,6 +49,10 @@
                             <label class="form-label">Дата рождения</label>
                             <input type="date" class="form-control" name="birthDate" required>
                         </div>
+                        <div class="mt-3">
+                            <input type="file" id="photo" accept="image/jpeg,image/jpg" style="display: none;">
+                            <button class="btn btn-primary" onclick="document.getElementById('photo').click()">Загрузить фото</button>
+                        </div>
                         <h4 class="mb-3">Адрес</h4>
                         <div class="row">
                             <div class="col-md-6 mb-3">
@@ -74,7 +78,7 @@
                     </form>
                     <div class="text-center mt-3">
                         <p>Уже есть аккаунт? <a href="/login.html">Войти</a></p>
-                        <a href="/static" class="text-decoration-none">Вернуться на главную</a>
+                        <a href="/" class="text-decoration-none">Вернуться на главную</a>
                     </div>
                 </div>
             </div>

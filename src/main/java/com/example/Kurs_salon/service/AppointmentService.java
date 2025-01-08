@@ -35,7 +35,7 @@ public class AppointmentService {
         appointment.setMaster(master);
         appointment.setServicee(service);
         appointment.setAppointmentDate(dto.getAppointmentDate());
-        appointment.setStatus("В обработке"); // Устанавливаем начальный статус
+        appointment.setStatus("В обработке");
 
         return appointmentRepository.save(appointment);
     }

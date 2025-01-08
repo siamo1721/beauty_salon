@@ -1,5 +1,4 @@
-// dashboard.js
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     setupNavigation();
     loadTab('dashboard');
 });
@@ -20,7 +19,7 @@ async function loadTab(tab) {
     contentArea.innerHTML = '<div class="text-center"><div class="spinner-border" role="status"><span class="visually-hidden">Загрузка...</span></div></div>';
 
     try {
-        switch(tab) {
+        switch (tab) {
             case 'dashboard':
                 loadDashboard();
                 break;
@@ -120,13 +119,9 @@ function displayUsers(users) {
                         <h5 class="card-title">${user.firstName || ''} ${user.lastName || ''}</h5>
                         <p class="card-text">
                             Email: ${user.email || 'Не указан'}<br>
-                            Роль: ${user.userRoles && user.userRoles[0] ? user.userRoles[0] : 'Не назначена'}
+                            Роль: ${user.userRoles && user.userRoles.length > 0 ? user.userRoles[0].userAuthority : 'Не назначена'}
                         </p>
                         <select class="form-select mb-2" onchange="updateUserRole(${user.id}, this.value)">
-                            <!--// <option value="CLIENT" ${user.roles && user.roles[0] === 'CLIENT' ? 'selected' : ''}>Клиент</option>
-                            <option value="MASTER" ${user.roles && user.roles[0] === 'MASTER' ? 'selected' : ''}>Мастер</option>
-                            <option value="ADMIN" ${user.roles && user.roles[0] === 'ADMIN' ? 'selected' : ''}>Администратор</option> 
-                            <option value="SYSTEM_ADMIN" ${user.roles && user.roles[0] === 'SYSTEM_ADMIN' ? 'selected' : ''}>Системный администратор</option>!-->
                             <option value="CLIENT" ${user.userRoles[0]?.userAuthority === 'CLIENT' ? 'selected' : ''}>Клиент</option>
                             <option value="MASTER" ${user.userRoles[0]?.userAuthority === 'MASTER' ? 'selected' : ''}>Мастер</option>
                             <option value="ADMIN" ${user.userRoles[0]?.userAuthority === 'ADMIN' ? 'selected' : ''}>Администратор</option>
@@ -154,9 +149,42 @@ function showAddUserForm() {
                 <label for="lastName" class="form-label">Фамилия</label>
                 <input type="text" class="form-control" id="lastName" required>
             </div>
+             <div class="mb-3">
+                <label for="phone" class="form-label">Телефон</label>
+                <input type="tel" class="form-control" id="phone" required>
+            </div>
             <div class="mb-3">
                 <label for="email" class="form-label">Email</label>
                 <input type="email" class="form-control" id="email" required>
+            </div>
+             <div class="mb-3">
+                <label for="username" class="form-label">Имя пользователя</label>
+                <input type="text" class="form-control" id="username" required>
+            </div>
+            <h4 class="mb-3">Адрес</h4>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="city" class="form-label">Город</label>
+                                <input type="text" class="form-control" id="city" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="street" class="form-label">Улица</label>
+                                <input type="text" class="form-control" id="street" required>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="house" class="form-label">Дом</label>
+                                <input type="text" class="form-control" id="house" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="apartment" class="form-label">Квартира</label>
+                                <input type="text" class="form-control" id="apartment" required>
+                            </div>
+                        </div>
+            <div class="mb-3">
+                <label for="birth_date" class="form-label">День рождения</label>
+                <input type="date" class="form-control" id="birth_date" required>
             </div>
             <div class="mb-3">
                 <label for="password" class="form-label">Пароль</label>
@@ -172,7 +200,16 @@ function showAddUserForm() {
             firstName: document.getElementById('firstName').value,
             lastName: document.getElementById('lastName').value,
             email: document.getElementById('email').value,
-            password: document.getElementById('password').value
+            password: document.getElementById('password').value,
+            username: document.getElementById('username').value,
+            phone: document.getElementById('phone').value,
+            birthDate: document.getElementById('birth_date').value,
+            address: {
+                city: document.getElementById('city').value,
+                street: document.getElementById('street').value,
+                house: document.getElementById('house').value,
+                apartment: document.getElementById('apartment').value
+            }
         };
         await addUser(userData);
     });
@@ -206,18 +243,54 @@ async function editUser(userId) {
         contentArea.innerHTML = `
             <h2>Редактировать пользователя</h2>
             <form id="edit-user-form">
-                <div class="mb-3">
-                    <label for="firstName" class="form-label">Имя</label>
-                    <input type="text" class="form-control" id="firstName" value="${user.firstName}" required>
-                </div>
-                <div class="mb-3">
-                    <label for="lastName" class="form-label">Фамилия</label>
-                    <input type="text" class="form-control" id="lastName" value="${user.lastName}" required>
-                </div>
-                <div class="mb-3">
-                    <label for="email" class="form-label">Email</label>
-                    <input type="email" class="form-control" id="email" value="${user.email}" required>
-                </div>
+                <label for="firstName" class="form-label">Имя</label>
+                <input type="text" class="form-control" id="firstName" required>
+            </div>
+            <div class="mb-3">
+                <label for="lastName" class="form-label">Фамилия</label>
+                <input type="text" class="form-control" id="lastName" required>
+            </div>
+             <div class="mb-3">
+                <label for="phone" class="form-label">Телефон</label>
+                <input type="tel" class="form-control" id="phone" required>
+            </div>
+            <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" class="form-control" id="email" required>
+            </div>
+             <div class="mb-3">
+                <label for="username" class="form-label">Имя пользователя</label>
+                <input type="text" class="form-control" id="username" required>
+            </div>
+            <h4 class="mb-3">Адрес</h4>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="city" class="form-label">Город</label>
+                                <input type="text" class="form-control" id="city" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="street" class="form-label">Улица</label>
+                                <input type="text" class="form-control" id="street" required>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="house" class="form-label">Дом</label>
+                                <input type="text" class="form-control" id="house" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="apartment" class="form-label">Квартира</label>
+                                <input type="text" class="form-control" id="apartment" required>
+                            </div>
+                        </div>
+            <div class="mb-3">
+                <label for="birth_date" class="form-label">День рождения</label>
+                <input type="date" class="form-control" id="birth_date" required>
+            </div>
+            <div class="mb-3">
+                <label for="registration_date" class="form-label">Дата регистрации</label>
+                <input type="date" class="form-control" id="registration_date" required>
+            </div>
                 <div class="mb-3">
                     <label for="password" class="form-label">Новый пароль (оставьте пустым, если не хотите менять)</label>
                     <input type="password" class="form-control" id="password">
@@ -225,6 +298,14 @@ async function editUser(userId) {
                 <button type="submit" class="btn btn-primary">Сохранить изменения</button>
             </form>
         `;
+        const today = new Date();
+        const offset = today.getTimezoneOffset();
+        const moscowOffset = 180;
+        today.setMinutes(today.getMinutes() + offset + moscowOffset);
+
+        const formattedDate = today.toISOString().split('T')[0];
+
+        document.getElementById('registration_date').value = formattedDate;
 
         document.getElementById('edit-user-form').addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -232,7 +313,17 @@ async function editUser(userId) {
                 firstName: document.getElementById('firstName').value,
                 lastName: document.getElementById('lastName').value,
                 email: document.getElementById('email').value,
-                password: document.getElementById('password').value
+                password: document.getElementById('password').value || null,
+                username: document.getElementById('username').value,
+                phone: document.getElementById('phone').value,
+                birthDate: document.getElementById('birth_date').value,
+                registrationDate: document.getElementById('registration_date').value,
+                address: {
+                    city: document.getElementById('city').value,
+                    street: document.getElementById('street').value,
+                    house: document.getElementById('house').value,
+                    apartment: document.getElementById('apartment').value
+                }
             };
             await updateUser(userId, updatedUserData);
         });
@@ -287,7 +378,7 @@ async function updateUserRole(userId, newRole) {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ role: newRole })
+            body: JSON.stringify({role: newRole})
         });
         await loadUsers();
     } catch (error) {
@@ -314,7 +405,7 @@ function displayMasters(masters) {
                         <h5 class="card-title">${master.firstName} ${master.lastName}</h5>
                         <p class="card-text">
                             Специализация: ${master.specialization}<br>
-                            Опыт работы: ${master.experience} лет
+                            Режим работы: ${master.work_schedule} 
                         </p>
                         <button class="btn btn-primary" onclick="editMaster(${master.id})">Редактировать</button>
                         <button class="btn btn-danger" onclick="deleteMaster(${master.id})">Удалить</button>
@@ -339,8 +430,8 @@ function showAddMasterForm() {
                 <input type="text" class="form-control" id="specialization" required>
             </div>
             <div class="mb-3">
-                <label for="experience" class="form-label">Опыт работы (лет)</label>
-                <input type="number" class="form-control" id="experience" required>
+                <label for="work_schedule" class="form-label">График работы</label>
+                <input type="text" class="form-control" id="work_schedule" placeholder="Например: ПН-ПТ 9:00-18:00" required pattern="^[А-Яа-яA-Za-z]+-[А-Яа-яA-Za-z]+ \\d{1,2}:\\d{2}-\\d{1,2}:\\d{2}$" required>
             </div>
             <button type="submit" class="btn btn-primary">Добавить</button>
         </form>
@@ -351,7 +442,7 @@ function showAddMasterForm() {
         const masterData = {
             userId: document.getElementById('userId').value,
             specialization: document.getElementById('specialization').value,
-            experience: document.getElementById('experience').value
+            experience: document.getElementById('work_schedule').value
         };
         await addMaster(masterData);
     });
@@ -390,8 +481,8 @@ async function editMaster(masterId) {
                     <input type="text" class="form-control" id="specialization" value="${master.specialization}" required>
                 </div>
                 <div class="mb-3">
-                    <label for="experience" class="form-label">Опыт работы (лет)</label>
-                    <input type="number" class="form-control" id="experience" value="${master.experience}" required>
+                    <label for="work_schedule" class="form-label">Режим работы </label>
+                    <input type="text" class="form-control" id="work_schedule" value="${master.work_schedule}" placeholder="Например: ПН-ПТ 9:00-18:00" required pattern="^[А-Яа-яA-Za-z]+-[А-Яа-яA-Za-z]+ \\d{1,2}:\\d{2}-\\d{1,2}:\\d{2}$" required>
                 </div>
                 <button type="submit" class="btn btn-primary">Сохранить изменения</button>
             </form>
@@ -401,7 +492,7 @@ async function editMaster(masterId) {
             e.preventDefault();
             const updatedMasterData = {
                 specialization: document.getElementById('specialization').value,
-                experience: document.getElementById('experience').value
+                work_schedule: document.getElementById('work_schedule').value
             };
             await updateMaster(masterId, updatedMasterData);
         });
@@ -466,8 +557,10 @@ function displayServices(services) {
                     <div class="card-body">
                         <h5 class="card-title">${service.name}</h5>
                         <p class="card-text">
-                            Цена: ${service.price} руб.<br>
-                            Длительность: ${service.duration} мин.
+                            Название: ${service.name} <br>
+                            Цена: ${service.price} руб. <br>
+                            Длительность: ${service.duration} мин. <br>
+                            Описание : ${service.description}
                         </p>
                         <button class="btn btn-primary" onclick="editService(${service.id})">Редактировать</button>
                         <button class="btn btn-danger" onclick="deleteService(${service.id})">Удалить</button>
@@ -495,6 +588,10 @@ function showAddServiceForm() {
                 <label for="duration" class="form-label">Длительность (мин.)</label>
                 <input type="number" class="form-control" id="duration" required>
             </div>
+            <div class="mb-3">
+                <label for="description" class="from-lable">Описание </label>
+                 <input type="text" class="form-control" id="description" required>
+            </div>
             <button type="submit" class="btn btn-primary">Добавить</button>
         </form>
     `;
@@ -504,7 +601,8 @@ function showAddServiceForm() {
         const serviceData = {
             name: document.getElementById('name').value,
             price: document.getElementById('price').value,
-            duration: document.getElementById('duration').value
+            duration: document.getElementById('duration').value,
+            description: document.getElementById('description').value
         };
         await addService(serviceData);
     });
@@ -550,6 +648,10 @@ async function editService(serviceId) {
                     <label for="duration" class="form-label">Длительность (мин.)</label>
                     <input type="number" class="form-control" id="duration" value="${service.duration}" required>
                 </div>
+                <div class="mb-3">
+                    <label for="description" class="from-lable">Описание </label>
+                    <input type="text" class="form-control" id="description" value="${service.description}" required>
+                </div>
                 <button type="submit" class="btn btn-primary">Сохранить изменения</button>
             </form>
         `;
@@ -559,7 +661,8 @@ async function editService(serviceId) {
             const updatedServiceData = {
                 name: document.getElementById('name').value,
                 price: document.getElementById('price').value,
-                duration: document.getElementById('duration').value
+                duration: document.getElementById('duration').value,
+                description: document.getElementById('description').value
             };
             await updateService(serviceId, updatedServiceData);
         });
@@ -607,23 +710,8 @@ async function deleteService(serviceId) {
     }
 }
 
-function loadReports() {
-    const contentArea = document.getElementById('content-area');
-    contentArea.innerHTML = `
-        <h2>Отчеты</h2>
-        <div class="mb-3">
-            <label for="startDate" class="form-label">Начальная дата</label>
-            <input type="date" class="form-control" id="startDate">
-        </div>
-        <div class="mb-3">
-            <label for="endDate" class="form-label">Конечная дата</label>
-            <input type="date" class="form-control" id="endDate">
-        </div>
-        <button class="btn btn-primary" onclick="generateServicesReport()">Сгенерировать отчет по услугам</button>
-    `;
-}
 
-async function generateServicesReport() {
+async function downloadProceduresReport() {
     const startDate = document.getElementById('startDate').value;
     const endDate = document.getElementById('endDate').value;
 
@@ -633,18 +721,55 @@ async function generateServicesReport() {
     }
 
     try {
-        const response = await fetch(`/api/admin/reports/services?startDate=${startDate}&endDate=${endDate}`);
+        const response = await fetch(`/api/admin/reports/procedures?startDate=${startDate}&endDate=${endDate}`);
         const blob = await response.blob();
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.style.display = 'none';
         a.href = url;
-        a.download = 'services-report.pdf';
+        a.download = 'procedures-report.pdf';
         document.body.appendChild(a);
         a.click();
         window.URL.revokeObjectURL(url);
     } catch (error) {
-        console.error('Ошибка при генерации отчета:', error);
-        alert('Произошла ошибка при генерации отчета');
+        console.error('Ошибка при скачивании отчета:', error);
+        alert('Произошла ошибка при скачивании отчета');
     }
 }
+
+async function downloadClientsReport() {
+    try {
+        const response = await fetch('/api/admin/reports/clients');
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.style.display = 'none';
+        a.href = url;
+        a.download = 'clients-report.pdf';
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+    } catch (error) {
+        console.error('Ошибка при скачивании отчета:', error);
+        alert('Произошла ошибка при скачивании отчета');
+    }
+}
+function loadReports() {
+    const contentArea = document.getElementById('content-area');
+    contentArea.innerHTML = `
+            <div id="reports-section">
+           <h2>Отчеты</h2>
+            <div className="mb-3">
+            <label htmlFor="startDate" className="form-label">Начальная дата</label>
+            <input type="date" className="form-control" id="startDate"/>
+        </div>
+        <div className="mb-3">
+            <label htmlFor="endDate" className="form-label">Конечная дата</label>
+            <input type="date" className="form-control" id="endDate"/>
+        </div>
+        <button className="btn btn-primary" onClick="downloadProceduresReport()">Скачать отчет по процедурам</button>
+        <button className="btn btn-primary" onClick="downloadClientsReport()">Скачать отчет по клиентам</button>
+    </div>
+    `;
+}
+

@@ -1,9 +1,12 @@
 package com.example.Kurs_salon.service;
 
+import com.example.Kurs_salon.dto.RegistrationDto;
 import com.example.Kurs_salon.exception.UsernameAlreadyExistsException;
+import com.example.Kurs_salon.model.Address;
 import com.example.Kurs_salon.model.User;
 import com.example.Kurs_salon.model.UserAuthority;
 import com.example.Kurs_salon.model.UserRole;
+import com.example.Kurs_salon.repository.AddressRepository;
 import com.example.Kurs_salon.repository.UserRepository;
 import com.example.Kurs_salon.repository.UserRolesRepository;
 import jakarta.transaction.Transactional;
@@ -14,29 +17,50 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.time.LocalDate;
 
 @RequiredArgsConstructor
 @Service
 public class UserServiceImpl implements UserService, UserDetailsService {
 
+
     private final UserRolesRepository userRolesRepository;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final AddressRepository addressRepository;
 
-    @Transactional
-    @Override
-    public void registerClient(String username, String password, String firstName, String lastName, String email, String phone) {
-        if (userRepository.findByUsername(username).isPresent()) {
+    public void registerClient(RegistrationDto registrationDto) throws IOException {
+        if (userRepository.findByUsername(registrationDto.getUsername()).isPresent()) {
             throw new UsernameAlreadyExistsException();
         }
 
+        Address address = new Address();
+        address.setStreet(registrationDto.getAddress().getStreet());
+        address.setCity(registrationDto.getAddress().getCity());
+        address.setHouse(registrationDto.getAddress().getHouse());
+        address.setApartment(registrationDto.getAddress().getApartment());
+
+        address = addressRepository.save(address);
+
         User user = new User()
-                .setUsername(username)
-                .setPassword(passwordEncoder.encode(password))
-                .setFirstName(firstName)
-                .setLastName(lastName)
-                .setEmail(email)
-                .setPhone(phone)
+                .setUsername(registrationDto.getUsername())
+                .setPassword(passwordEncoder.encode(registrationDto.getPassword()))
+                .setFirstName(registrationDto.getFirstName())
+                .setLastName(registrationDto.getLastName())
+                .setEmail(registrationDto.getEmail())
+                .setPhone(registrationDto.getPhone())
+                .setBirthDate(LocalDate.parse(registrationDto.getBirthDate()))
+                .setPhotoPath(registrationDto.getPhotoPath())
+                .setAddress(address)
+                .setRegistrationDate(LocalDate.now())
                 .setLocked(false)
                 .setExpired(false)
                 .setEnabled(true);

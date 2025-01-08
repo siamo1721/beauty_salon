@@ -51,9 +51,42 @@
 </nav>
 
 <div class="container mt-5">
+    <h2 class="mb-4">Мои записи</h2>
+    <div id="user-appointments"></div>
+
     <h2 class="mb-4">Отзывы наших клиентов</h2>
     <div class="row" id="reviews-container">
-        <!-- Отзывы будут добавлены через JavaScript -->
+
+    </div>
+</div>
+<div class="modal fade" id="reviewModal" tabindex="-1" aria-labelledby="reviewModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="reviewModalLabel">Оставить отзыв</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="reviewForm">
+                    <input type="hidden" id="appointmentId">
+                    <div class="mb-3">
+                        <label for="rating" class="form-label">Оценка</label>
+                        <select class="form-select" id="rating" required>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="reviewText" class="form-label">Отзыв</label>
+                        <textarea class="form-control" id="reviewText" rows="3" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Отправить отзыв</button>
+                </form>
+            </div>
+        </div>
     </div>
 </div>
 

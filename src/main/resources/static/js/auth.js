@@ -58,6 +58,7 @@ async function handleRegister(event) {
         email: formData.get('email'),
         phone: formData.get('phone'),
         birthDate: formData.get('birthDate'),
+        photo: formData.get('photo'),
         address: {
             city: formData.get('city'),
             street: formData.get('street'),

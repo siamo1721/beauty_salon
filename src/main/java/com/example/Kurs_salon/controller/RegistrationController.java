@@ -6,6 +6,8 @@ import com.example.Kurs_salon.model.User;
 import com.example.Kurs_salon.service.UserService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -15,7 +17,9 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.Map;
 
 @RestController
@@ -26,15 +30,8 @@ public class RegistrationController {
     private final AuthenticationManager authenticationManager;
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody RegistrationDto registrationDto) {
-        userService.registerClient(
-                registrationDto.getUsername(),
-                registrationDto.getPassword(),
-                registrationDto.getFirstName(),
-                registrationDto.getLastName(),
-                registrationDto.getEmail(),
-                registrationDto.getPhone()
-        );
+    public ResponseEntity<?> register(@RequestBody RegistrationDto registrationDto) throws IOException {
+        userService.registerClient(registrationDto);
         return ResponseEntity.ok().build();
     }
 

@@ -2,14 +2,12 @@ package com.example.Kurs_salon.model;
 
 
 import jakarta.persistence.*;
-import lombok.Data;
 import java.math.BigDecimal;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-@Data
 @Entity
 @Table(name = "services")
 public class Servicee {
@@ -21,4 +19,8 @@ public class Servicee {
     private BigDecimal price;
     private Integer duration;
     private String description;
+
+    public void SetDescription(String description) {
+        this.description = description;
+    }
 }

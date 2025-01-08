@@ -30,19 +30,19 @@ function displayServices(services) {
                             Цена: ${service.price} ₽
                         </small>
                     </p>
-                    <button onclick="bookService(${service.id})" class="btn btn-primary">Записаться</button>
+<!--                    <button class="btn btn-primary">Записаться</button>-->
                 </div>
             </div>
         `;
         container.appendChild(serviceCard);
     });
 }
-
-async function bookService(serviceId) {
-    const isAuthenticated = await checkAuth();
-    if (!isAuthenticated) {
-        window.location.href = '/login.html';
-        return;
-    }
-    window.location.href = `/appointment.html?service=${serviceId}`;
-}
+// <button onclick="bookService(${service.id})"
+// async function bookService(serviceId) {
+//     const isAuthenticated = await checkAuth();
+//     if (!isAuthenticated) {
+//         window.location.href = '/login.html';
+//         return;
+//     }
+//     window.location.href = `/appointment.html?service=${serviceId}`;
+// }
