@@ -16,6 +16,12 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
 
     // Подсчет завершенных записей для мастера
     int countByMasterAndStatus(Master master, String status);
+    @Query("SELECT DISTINCT a FROM Appointment a " +
+            "JOIN FETCH a.user u " +
+            "JOIN FETCH a.servicee s " +
+            "JOIN FETCH a.master m " +
+            "JOIN FETCH m.user mu ")
+    List<Appointment> findAllAppointmentsWithDetails();
 
     // Суммирование доходов для мастера
     @Query("SELECT SUM(s.price) FROM Appointment a JOIN a.servicee s WHERE a.master = :master AND a.status = 'COMPLETED'")

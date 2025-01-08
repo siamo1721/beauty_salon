@@ -9,7 +9,9 @@ import com.example.Kurs_salon.model.UserAuthority;
 import com.example.Kurs_salon.service.AdminService;
 import com.example.Kurs_salon.service.PdfGenerationService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +20,9 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
+
 @RestController
+@Slf4j
 @RequestMapping("/api/admin")
 @PreAuthorize("hasAuthority('ADMIN')")
 @RequiredArgsConstructor
@@ -91,13 +95,20 @@ public class AdminController {
 
     @GetMapping("/reports/procedures")
     public ResponseEntity<byte[]> getProceduresReport(
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDateTime startDate,
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDateTime endDate) {
-        byte[] report = pdfGenerationService.generateProceduresReport(startDate, endDate);
-        return ResponseEntity.ok()
-                .header("Content-Type", "application/pdf")
-                .header("Content-Disposition", "attachment; filename=procedures-report.pdf")
-                .body(report);
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDate) {
+        log.info("Received request for procedures report. Start date: {}, End date: {}", startDate, endDate);
+        try {
+            byte[] report = pdfGenerationService.generateProceduresReport(startDate, endDate);
+            log.info("Report generated successfully. Size: {} bytes", report.length);
+            return ResponseEntity.ok()
+                    .header("Content-Type", "application/pdf")
+                    .header("Content-Disposition", "attachment; filename=procedures-report.pdf")
+                    .body(report);
+        } catch (Exception e) {
+            log.error("Error generating procedures report", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
     }
 
     @GetMapping("/reports/clients")

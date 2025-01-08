@@ -4,16 +4,17 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 function setupNavigation() {
-    const navLinks = document.querySelectorAll('.nav-link, .navbar-brand');
+    const navLinks = document.querySelectorAll('.nav-link, .navbar-brand, [data-tab]');
     navLinks.forEach(link => {
         link.addEventListener('click', (e) => {
             e.preventDefault();
             const tab = e.target.getAttribute('data-tab');
-            loadTab(tab);
+            if (tab) {
+                loadTab(tab);
+            }
         });
     });
 }
-
 async function loadTab(tab) {
     const contentArea = document.getElementById('content-area');
     contentArea.innerHTML = '<div class="text-center"><div class="spinner-border" role="status"><span class="visually-hidden">Загрузка...</span></div></div>';
@@ -54,7 +55,7 @@ function loadDashboard() {
                     <div class="card-body">
                         <h5 class="card-title">Пользователи</h5>
                         <p class="card-text">Управление пользователями и ролями</p>
-                        <a href="#" class="btn btn-primary" data-tab="users">Перейти</a>
+                        <button class="btn btn-primary" data-tab="users">Перейти</button>
                     </div>
                 </div>
             </div>
@@ -63,7 +64,7 @@ function loadDashboard() {
                     <div class="card-body">
                         <h5 class="card-title">Мастера</h5>
                         <p class="card-text">Управление мастерами и их расписанием</p>
-                        <a href="#" class="btn btn-primary" data-tab="masters">Перейти</a>
+                        <button class="btn btn-primary" data-tab="masters">Перейти</button>
                     </div>
                 </div>
             </div>
@@ -72,7 +73,7 @@ function loadDashboard() {
                     <div class="card-body">
                         <h5 class="card-title">Услуги</h5>
                         <p class="card-text">Управление услугами салона</p>
-                        <a href="#" class="btn btn-primary" data-tab="services">Перейти</a>
+                        <button class="btn btn-primary" data-tab="services">Перейти</button>
                     </div>
                 </div>
             </div>
@@ -81,7 +82,7 @@ function loadDashboard() {
                     <div class="card-body">
                         <h5 class="card-title">Отчеты</h5>
                         <p class="card-text">Просмотр и генерация отчетов</p>
-                        <a href="#" class="btn btn-primary" data-tab="reports">Перейти</a>
+                        <button class="btn btn-primary" data-tab="reports">Перейти</button>
                     </div>
                 </div>
             </div>
@@ -720,9 +721,30 @@ async function downloadProceduresReport() {
         return;
     }
 
+    const startDateTime = new Date(startDate).toISOString();
+    const endDateTime = new Date(endDate + 'T23:59:59').toISOString();
+
     try {
-        const response = await fetch(`/api/admin/reports/procedures?startDate=${startDate}&endDate=${endDate}`);
+        const response = await fetch(`/api/admin/reports/procedures?startDate=${startDateTime}&endDate=${endDateTime}`);
+
+        if (!response.ok) {
+            const errorText = await response.text();
+            console.error('Server error:', errorText);
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const contentType = response.headers.get('content-type');
+        if (contentType && contentType.indexOf('application/pdf') === -1) {
+            console.error('Received non-PDF response:', await response.text());
+            throw new Error('Сервер вернул не PDF файл');
+        }
+
         const blob = await response.blob();
+        if (blob.size < 1000) {
+            console.error('Received suspiciously small PDF:', await blob.text());
+            throw new Error('Полученный PDF файл подозрительно мал');
+        }
+
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.style.display = 'none';
@@ -733,7 +755,7 @@ async function downloadProceduresReport() {
         window.URL.revokeObjectURL(url);
     } catch (error) {
         console.error('Ошибка при скачивании отчета:', error);
-        alert('Произошла ошибка при скачивании отчета');
+        alert('Произошла ошибка при скачивании отчета: ' + error.message);
     }
 }
 
