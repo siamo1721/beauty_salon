@@ -3,18 +3,13 @@ package com.example.Kurs_salon.service;
 import com.example.Kurs_salon.dto.MasterStatistics;
 import com.example.Kurs_salon.model.Appointment;
 import com.example.Kurs_salon.model.Master;
-import com.example.Kurs_salon.model.User;
 import com.example.Kurs_salon.repository.AppointmentRepository;
 import com.example.Kurs_salon.repository.MasterRepository;
 import com.example.Kurs_salon.repository.ReviewRepository;
-import com.example.Kurs_salon.repository.UserRepository;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.security.core.context.SecurityContext;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -26,7 +21,6 @@ import java.util.List;
 public class MasterRoleService {
     private final AppointmentRepository appointmentRepository;
     private final MasterRepository masterRepository;
-    private final UserRepository userRepository;
     private final ReviewRepository reviewRepository;
 
     public List<Appointment> getTodayAppointments() {
@@ -38,19 +32,10 @@ public class MasterRoleService {
                 currentMaster, startOfDay, endOfDay);
     }
     public List<Appointment> getMasterAppointments() {
-        Master currentMaster = getCurrentMaster(); // Метод для получения текущего пользователя
+        Master currentMaster = getCurrentMaster();
         return appointmentRepository.findByMasterId(currentMaster.getId());
     }
-    private User getCurrentUser() {
-        SecurityContext securityContext = SecurityContextHolder.getContext();
-        Authentication authentication = securityContext.getAuthentication();
-        if (authentication == null || !authentication.isAuthenticated()) {
-            throw new SecurityException("No authenticated user found");
-        }
-        String username = authentication.getName();
-        return userRepository.findByUsername(username)
-                .orElseThrow(() -> new EntityNotFoundException("User not found"));
-    }
+
 
     @Transactional
     public Appointment updateAppointmentStatus(Long id, String status) {
@@ -65,22 +50,17 @@ public class MasterRoleService {
     public MasterStatistics getMasterStatistics() {
         Master currentMaster = getCurrentMaster();
 
-        // Подсчет общего количества записей
         int totalAppointments = appointmentRepository.countByMaster(currentMaster);
 
-        // Подсчет завершенных записей
         int completedAppointments = appointmentRepository.countByMasterAndStatus(currentMaster, "COMPLETED");
 
-        // Подсчет общего заработка
         BigDecimal totalEarnings = appointmentRepository.sumEarningsByMaster(currentMaster);
 
-        // Подсчет среднего рейтинга
         Double averageRating = reviewRepository.calculateAverageRatingForMaster(currentMaster);
         if (averageRating == null) {
-            averageRating = 0.0; // Если нет отзывов, рейтинг 0
+            averageRating = 0.0;
         }
 
-        // Формирование объекта статистики
         MasterStatistics statistics = new MasterStatistics();
         statistics.setTotalAppointments(totalAppointments);
         statistics.setCompletedAppointments(completedAppointments);

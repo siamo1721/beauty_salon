@@ -33,8 +33,6 @@ public class User implements UserDetails {
     private String lastName;
     private String phone;
     private String email;
-    @Column(name = "photo_path")
-    private String photoPath;
     private String username;
     private LocalDate birthDate;
 

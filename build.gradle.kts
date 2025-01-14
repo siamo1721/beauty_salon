@@ -39,7 +39,10 @@ dependencies {
 	testImplementation ("com.h2database:h2")
 	implementation ("com.itextpdf:itextpdf:5.5.13.3")
 	implementation ("org.apache.pdfbox:pdfbox:3.0.0")
-
+	implementation("io.jsonwebtoken:jjwt-api:0.11.5")
+	runtimeOnly ("io.jsonwebtoken:jjwt-impl:0.11.5")
+	runtimeOnly ("io.jsonwebtoken:jjwt-jackson:0.11.5")
+	implementation("javax.servlet:javax.servlet-api:4.0.1")
 
 }
 

@@ -69,7 +69,7 @@ async function uploadPhoto(event) {
         }
 
         alert('Фото успешно загружено');
-        loadUserProfile(); // Перезагрузим профиль, чтобы отобразить новое фото
+        loadUserProfile();
     } catch (error) {
         console.error('Ошибка при загрузке фото:', error);
         alert('Не удалось загрузить фото');
@@ -79,7 +79,7 @@ async function loadUserAppointments() {
     try {
         const response = await fetch('/api/appointments/my', {
             headers: {
-                'Authorization': `Bearer ${localStorage.getItem('token')}`, // или как у вас хранится токен
+                'Authorization': `Bearer ${localStorage.getItem('token')}`,
                 'Content-Type': 'application/json'
             }
         });
@@ -89,7 +89,7 @@ async function loadUserAppointments() {
         }
 
         const appointments = await response.json();
-        console.log('Полученные записи:', appointments); // для отладки
+        console.log('Полученные записи:', appointments);
         displayAppointments(appointments);
     } catch (error) {
         console.error('Подробная ошибка при загрузке записей:', error);
@@ -116,9 +116,37 @@ function displayAppointments(appointments) {
                     Услуга: ${appointment.servicee?.name || 'Не указана'}<br>
                     Мастер: ${appointment.master?.user?.firstName || 'Не указан'} ${appointment.master?.user?.lastName || ''}<br>
                     Статус: ${appointment.status || 'Не указан'}
+                    ${appointment.status !== 'COMPLETED' && appointment.status !== 'CANCELED' ?
+            `<button class="btn btn-danger btn-sm" onclick="cancelAppointment(${appointment.id})">Отменить запись</button>` :
+            ''}
                 </p>
             </div>
         `;
         container.appendChild(card);
     });
+}
+async function cancelAppointment(appointmentId) {
+    if (!confirm('Вы уверены, что хотите отменить эту запись?')) {
+        return;
+    }
+
+    try {
+        const response = await fetch(`/api/appointments/${appointmentId}/cancel`, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                'Content-Type': 'application/json'
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        alert('Запись успешно отменена');
+        loadUserAppointments(); // Перезагрузка списка записей
+    } catch (error) {
+        console.error('Ошибка при отмене записи:', error);
+        alert('Не удалось отменить запись. Пожалуйста, попробуйте еще раз.');
+    }
 }

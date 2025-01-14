@@ -1,7 +1,6 @@
 package com.example.Kurs_salon.repository;
 import com.example.Kurs_salon.model.Appointment;
 import com.example.Kurs_salon.model.Master;
-import com.example.Kurs_salon.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -11,10 +10,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public interface AppointmentRepository extends JpaRepository<Appointment, Long> {
-    // Подсчет всех записей для мастера
     int countByMaster(Master master);
 
-    // Подсчет завершенных записей для мастера
     int countByMasterAndStatus(Master master, String status);
     @Query("SELECT DISTINCT a FROM Appointment a " +
             "JOIN FETCH a.user u " +
@@ -32,5 +29,4 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
     List<Appointment> findByMasterId(Long masterId);
     List<Appointment> findByMasterAndAppointmentDateBetween(Master master, LocalDateTime start, LocalDateTime end);
     List<Appointment> findAllByAppointmentDateBetween(LocalDateTime startDate, LocalDateTime endDate);
-    List<Appointment> findAllByUser(User user);
 }

@@ -1,6 +1,69 @@
 databaseChangeLog:
   - changeSet:
-      id: 1736008840140-1
+      id: 1736683336682-1
+      author: siamo
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createSequence:
+            incrementBy: 1
+            sequenceName: addresses_id_seq
+            startValue: 1
+  - changeSet:
+      id: 1736683336682-2
+      author: siamo
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createSequence:
+            incrementBy: 1
+            sequenceName: appointments_id_seq
+            startValue: 1
+  - changeSet:
+      id: 1736683336682-3
+      author: siamo
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createSequence:
+            incrementBy: 1
+            sequenceName: masters_id_seq
+            startValue: 1
+  - changeSet:
+      id: 1736683336682-4
+      author: siamo
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createSequence:
+            incrementBy: 1
+            sequenceName: products_id_seq
+            startValue: 1
+  - changeSet:
+      id: 1736683336682-5
+      author: siamo
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createSequence:
+            incrementBy: 1
+            sequenceName: purchases_id_seq
+            startValue: 1
+  - changeSet:
+      id: 1736683336682-6
+      author: siamo
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createSequence:
+            incrementBy: 1
+            sequenceName: reviews_id_seq
+            startValue: 1
+  - changeSet:
+      id: 1736683336682-7
+      author: siamo
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createSequence:
+            incrementBy: 1
+            sequenceName: services_id_seq
+            startValue: 1
+  - changeSet:
+      id: 1736683336682-8
       author: siamo
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -9,7 +72,7 @@ databaseChangeLog:
             sequenceName: user_id_seq
             startValue: 1
   - changeSet:
-      id: 1736008840140-2
+      id: 1736683336682-9
       author: siamo
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -18,7 +81,7 @@ databaseChangeLog:
             sequenceName: user_role_id_seq
             startValue: 1
   - changeSet:
-      id: 1736008840140-3
+      id: 1736683336682-10
       author: siamo
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -46,7 +109,7 @@ databaseChangeLog:
                   type: VARCHAR(255)
             tableName: addresses
   - changeSet:
-      id: 1736008840140-4
+      id: 1736683336682-11
       author: siamo
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -68,7 +131,7 @@ databaseChangeLog:
                   type: BIGINT
               - column:
                   name: appointment_date
-                  type: DATETIME
+                  type: timestamp
               - column:
                   name: status
                   type: VARCHAR(255)
@@ -77,7 +140,7 @@ databaseChangeLog:
                   type: BIGINT
             tableName: appointments
   - changeSet:
-      id: 1736008840140-5
+      id: 1736683336682-12
       author: siamo
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -102,7 +165,7 @@ databaseChangeLog:
                   type: VARCHAR(255)
             tableName: masters
   - changeSet:
-      id: 1736008840140-6
+      id: 1736683336682-13
       author: siamo
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -121,7 +184,7 @@ databaseChangeLog:
                   type: VARCHAR(255)
               - column:
                   name: price
-                  type: DECIMAL
+                  type: NUMBER
               - column:
                   name: stock_quantity
                   type: INT
@@ -130,7 +193,7 @@ databaseChangeLog:
                   type: VARCHAR(255)
             tableName: products
   - changeSet:
-      id: 1736008840140-7
+      id: 1736683336682-14
       author: siamo
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -152,13 +215,13 @@ databaseChangeLog:
                   type: BIGINT
               - column:
                   name: purchase_date
-                  type: DATETIME
+                  type: timestamp
               - column:
                   name: quantity
                   type: INT
               - column:
                   name: total_amount
-                  type: DECIMAL
+                  type: NUMBER
               - column:
                   name: service_id
                   type: BIGINT
@@ -167,7 +230,7 @@ databaseChangeLog:
                   type: BIGINT
             tableName: purchases
   - changeSet:
-      id: 1736008840140-8
+      id: 1736683336682-15
       author: siamo
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -189,13 +252,13 @@ databaseChangeLog:
                   type: VARCHAR(255)
               - column:
                   name: review_date
-                  type: DATETIME
+                  type: timestamp
               - column:
                   name: appointment_id
                   type: BIGINT
             tableName: reviews
   - changeSet:
-      id: 1736008840140-9
+      id: 1736683336682-16
       author: siamo
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -214,7 +277,7 @@ databaseChangeLog:
                   type: VARCHAR(255)
               - column:
                   name: price
-                  type: DECIMAL
+                  type: NUMBER
               - column:
                   name: duration
                   type: INT
@@ -223,7 +286,7 @@ databaseChangeLog:
                   type: VARCHAR(255)
             tableName: services
   - changeSet:
-      id: 1736008840140-10
+      id: 1736683336682-17
       author: siamo
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -238,13 +301,13 @@ databaseChangeLog:
                   type: BIGINT
               - column:
                   name: user_authority
-                  type: SMALLINT
+                  type: VARCHAR(50)
               - column:
                   name: user_id
                   type: BIGINT
             tableName: user_roles
   - changeSet:
-      id: 1736008840140-11
+      id: 1736683336682-18
       author: siamo
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -277,13 +340,13 @@ databaseChangeLog:
                   type: VARCHAR(255)
               - column:
                   name: birth_date
-                  type: DATE
+                  type: date
               - column:
                   name: address_id
                   type: BIGINT
               - column:
                   name: registration_date
-                  type: DATE
+                  type: date
               - column:
                   name: password
                   type: VARCHAR(255)
@@ -304,7 +367,7 @@ databaseChangeLog:
                   type: BOOLEAN
             tableName: users
   - changeSet:
-      id: 1736008840140-12
+      id: 1736683336682-19
       author: siamo
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -313,7 +376,7 @@ databaseChangeLog:
             constraintName: uc_masters_user
             tableName: masters
   - changeSet:
-      id: 1736008840140-13
+      id: 1736683336682-20
       author: siamo
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -322,124 +385,135 @@ databaseChangeLog:
             constraintName: uc_purchases_review
             tableName: purchases
   - changeSet:
-      id: 1736008840140-14
+      id: 1736683336682-21
       author: siamo
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
         - addForeignKeyConstraint:
             baseColumnNames: master_id
             baseTableName: appointments
-            constraintName: FK_APPOINTMENTS_ON_MASTER
+            constraintName: fk_appointments_on_master
+            onDelete: NO ACTION
             referencedColumnNames: id
             referencedTableName: masters
   - changeSet:
-      id: 1736008840140-15
+      id: 1736683336682-22
       author: siamo
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
         - addForeignKeyConstraint:
             baseColumnNames: service_id
             baseTableName: appointments
-            constraintName: FK_APPOINTMENTS_ON_SERVICE
+            constraintName: fk_appointments_on_service
+            onDelete: NO ACTION
             referencedColumnNames: id
             referencedTableName: services
   - changeSet:
-      id: 1736008840140-16
+      id: 1736683336682-23
       author: siamo
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
         - addForeignKeyConstraint:
             baseColumnNames: user_id
             baseTableName: appointments
-            constraintName: FK_APPOINTMENTS_ON_USER
+            constraintName: fk_appointments_on_user
+            onDelete: NO ACTION
             referencedColumnNames: id
             referencedTableName: users
   - changeSet:
-      id: 1736008840140-17
+      id: 1736683336682-24
       author: siamo
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
         - addForeignKeyConstraint:
             baseColumnNames: user_id
             baseTableName: masters
-            constraintName: FK_MASTERS_ON_USER
+            constraintName: fk_masters_on_user
+            onDelete: NO ACTION
             referencedColumnNames: id
             referencedTableName: users
   - changeSet:
-      id: 1736008840140-18
+      id: 1736683336682-25
       author: siamo
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
         - addForeignKeyConstraint:
             baseColumnNames: appointment_id
             baseTableName: purchases
-            constraintName: FK_PURCHASES_ON_APPOINTMENT
+            constraintName: fk_purchases_on_appointment
+            onDelete: NO ACTION
             referencedColumnNames: id
             referencedTableName: appointments
   - changeSet:
-      id: 1736008840140-19
+      id: 1736683336682-26
       author: siamo
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
         - addForeignKeyConstraint:
             baseColumnNames: product_id
             baseTableName: purchases
-            constraintName: FK_PURCHASES_ON_PRODUCT
+            constraintName: fk_purchases_on_product
+            onDelete: NO ACTION
             referencedColumnNames: id
             referencedTableName: products
   - changeSet:
-      id: 1736008840140-20
+      id: 1736683336682-27
       author: siamo
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
         - addForeignKeyConstraint:
             baseColumnNames: review_id
             baseTableName: purchases
-            constraintName: FK_PURCHASES_ON_REVIEW
+            constraintName: fk_purchases_on_review
+            onDelete: NO ACTION
             referencedColumnNames: id
             referencedTableName: reviews
   - changeSet:
-      id: 1736008840140-21
+      id: 1736683336682-28
       author: siamo
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
         - addForeignKeyConstraint:
             baseColumnNames: service_id
             baseTableName: purchases
-            constraintName: FK_PURCHASES_ON_SERVICE
+            constraintName: fk_purchases_on_service
+            onDelete: NO ACTION
             referencedColumnNames: id
             referencedTableName: services
   - changeSet:
-      id: 1736008840140-22
+      id: 1736683336682-29
       author: siamo
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
         - addForeignKeyConstraint:
             baseColumnNames: appointment_id
             baseTableName: reviews
-            constraintName: FK_REVIEWS_ON_APPOINTMENT
+            constraintName: fk_reviews_on_appointment
+            onDelete: NO ACTION
             referencedColumnNames: id
             referencedTableName: appointments
   - changeSet:
-      id: 1736008840140-23
-      author: siamo
-      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
-      changes:
-        - addForeignKeyConstraint:
-            baseColumnNames: address_id
-            baseTableName: users
-            constraintName: FK_USERS_ON_ADDRESS
-            referencedColumnNames: id
-            referencedTableName: addresses
-  - changeSet:
-      id: 1736008840140-24
+      id: 1736683336682-30
       author: siamo
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
         - addForeignKeyConstraint:
             baseColumnNames: user_id
             baseTableName: user_roles
-            constraintName: FK_USER_ROLES_ON_USER
+            constraintName: fk_user_roles_on_user
+            onDelete: NO ACTION
             referencedColumnNames: id
             referencedTableName: users
+  - changeSet:
+      id: 1736683336682-31
+      author: siamo
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: address_id
+            baseTableName: users
+            constraintName: fk_users_on_address
+            onDelete: NO ACTION
+            referencedColumnNames: id
+            referencedTableName: addresses
 

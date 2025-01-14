@@ -10,7 +10,4 @@ public class ReviewRequest {
     private Integer rating;
     private String reviewText;
 
-    public String getReviewText() {
-        return reviewText;
-    }
 }

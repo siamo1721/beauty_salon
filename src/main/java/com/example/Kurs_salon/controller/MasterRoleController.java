@@ -4,7 +4,6 @@ import com.example.Kurs_salon.dto.AppointmentStatusUpdateDto;
 import com.example.Kurs_salon.dto.MasterStatistics;
 import com.example.Kurs_salon.model.Appointment;
 import com.example.Kurs_salon.service.MasterRoleService;
-import com.example.Kurs_salon.service.MasterService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;

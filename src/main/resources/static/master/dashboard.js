@@ -44,7 +44,9 @@ function displayAppointments(appointments, containerId) {
                     <option value="PENDING" ${appointment.status === 'PENDING' ? 'selected' : ''}>Ожидает</option>
                     <option value="IN_PROGRESS" ${appointment.status === 'IN_PROGRESS' ? 'selected' : ''}>В процессе</option>
                     <option value="COMPLETED" ${appointment.status === 'COMPLETED' ? 'selected' : ''}>Завершено</option>
+                    <option value="CANCELED" ${appointment.status === 'CANCELED' ? 'selected' : ''}>Отменено</option>
                 </select>
+               
             </div>
         </div>
     `).join('');
@@ -55,6 +57,7 @@ async function updateStatus(appointmentId, newStatus) {
         const response = await fetch(`/api/master/appointments/${appointmentId}/status`, {
             method: 'POST',
             headers: {
+
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({ status: newStatus })
@@ -69,7 +72,6 @@ async function updateStatus(appointmentId, newStatus) {
         alert('Не удалось обновить статус. Пожалуйста, попробуйте еще раз.');
     }
 }
-
 async function loadStatistics() {
     try {
         const response = await fetch('/api/master/statistics');
@@ -100,4 +102,29 @@ function displayStatistics(statistics) {
             </div>
         </div>
     `;
+}
+async function cancelAppointment(appointmentId) {
+    if (!confirm('Вы уверены, что хотите отменить эту запись?')) {
+        return;
+    }
+
+    try {
+        const response = await fetch(`/api/appointments/${appointmentId}/cancel`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        alert('Запись успешно отменена');
+        await loadTodayAppointments();
+        await loadAllAppointments();
+    } catch (error) {
+        console.error('Ошибка при отмене записи:', error);
+        alert('Не удалось отменить запись. Пожалуйста, попробуйте еще раз.');
+    }
 }

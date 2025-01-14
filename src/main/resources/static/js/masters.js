@@ -24,11 +24,9 @@ function displayMasters(masters) {
                     <h5 class="card-title">${master.user.firstName} ${master.user.lastName}</h5>
                     <p class="card-text">
                         <strong>Специализация:</strong> ${master.specialization}<br>
-                        <strong>График работы:</strong> ${master.work_schedule}
+                        <strong>График работы:</strong> ${master.workSchedule}
                     </p>
-                    <button onclick="bookMaster(${master.id})" class="btn btn-primary">
-                        Записаться
-                    </button>
+
                 </div>
             </div>
         `;

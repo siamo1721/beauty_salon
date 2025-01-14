@@ -13,5 +13,5 @@ public class MasterDto {
     private String firstName;
     private String lastName;
     private String specialization;
-    private String WorkSchedule;
+    private String workSchedule;
 }

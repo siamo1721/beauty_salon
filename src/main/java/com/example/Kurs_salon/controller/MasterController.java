@@ -21,17 +21,14 @@ public class MasterController {
 
     @PostMapping
     public ResponseEntity<?> createMaster(@RequestBody MasterDto request) {
-        // Ищем пользователя по ID
         User user = userRepository.findById(request.getUserId())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        // Создаем объект Master
         Master master = new Master();
         master.setUser(user);
         master.setSpecialization(request.getSpecialization());
         master.setWorkSchedule(request.getWorkSchedule());
 
-        // Сохраняем мастера
         Master savedMaster = masterRepository.save(master);
 
         return ResponseEntity.ok(savedMaster);

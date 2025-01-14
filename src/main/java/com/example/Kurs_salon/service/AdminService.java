@@ -93,6 +93,7 @@ public class AdminService {
         Master master = new Master();
         master.setUser(user);
         master.setSpecialization(masterDto.getSpecialization());
+        master.setWorkSchedule(masterDto.getWorkSchedule());
         return convertToMasterDto(masterRepository.save(master));
     }
 
@@ -101,6 +102,7 @@ public class AdminService {
         Master master = masterRepository.findById(masterId)
                 .orElseThrow(() -> new RuntimeException("Мастер не найден"));
         master.setSpecialization(masterDto.getSpecialization());
+        master.setWorkSchedule(masterDto.getWorkSchedule());
         return convertToMasterDto(masterRepository.save(master));
     }
 

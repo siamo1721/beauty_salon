@@ -65,6 +65,4 @@ public class SystemAdminService {
         return appointmentRepository.save(appointment);
     }
 
-
-
 }

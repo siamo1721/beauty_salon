@@ -9,7 +9,6 @@ import com.example.Kurs_salon.model.UserRole;
 import com.example.Kurs_salon.repository.AddressRepository;
 import com.example.Kurs_salon.repository.UserRepository;
 import com.example.Kurs_salon.repository.UserRolesRepository;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,14 +16,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
-import org.springframework.web.multipart.MultipartFile;
+
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.time.LocalDate;
 
 @RequiredArgsConstructor
@@ -58,7 +52,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                 .setEmail(registrationDto.getEmail())
                 .setPhone(registrationDto.getPhone())
                 .setBirthDate(LocalDate.parse(registrationDto.getBirthDate()))
-                .setPhotoPath(registrationDto.getPhotoPath())
                 .setAddress(address)
                 .setRegistrationDate(LocalDate.now())
                 .setLocked(false)
@@ -68,50 +61,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         user = userRepository.save(user);
         userRolesRepository.save(new UserRole(null, UserAuthority.CLIENT, user));
     }
-
-    @Transactional
-    @Override
-    public void registerMaster(String username, String password, String firstName, String lastName, String email, String phone, String specialization) {
-        if (userRepository.findByUsername(username).isPresent()) {
-            throw new UsernameAlreadyExistsException();
-        }
-
-        User user = new User()
-                .setUsername(username)
-                .setPassword(passwordEncoder.encode(password))
-                .setFirstName(firstName)
-                .setLastName(lastName)
-                .setEmail(email)
-                .setPhone(phone)
-                .setLocked(false)
-                .setExpired(false)
-                .setEnabled(true);
-
-        user = userRepository.save(user);
-        userRolesRepository.save(new UserRole(null, UserAuthority.MASTER, user));
-    }
-
-    @Transactional
-    @Override
-    public void registerAdmin(String username, String password, String firstName, String lastName, String email, String phone) {
-        if (userRepository.findByUsername(username).isPresent()) {
-            throw new UsernameAlreadyExistsException();
-        }
-
-        User user = new User()
-                .setUsername(username)
-                .setPassword(passwordEncoder.encode(password))
-                .setFirstName(firstName)
-                .setLastName(lastName)
-                .setEmail(email)
-                .setPhone(phone)
-                .setLocked(false)
-                .setExpired(false)
-                .setEnabled(true);
-
-        user = userRepository.save(user);
-        userRolesRepository.save(new UserRole(null, UserAuthority.ADMIN, user));
-    }
+    
 
     @Override
     public User getCurrentUser() {

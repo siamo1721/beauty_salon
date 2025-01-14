@@ -1,0 +1,67 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1736683876048-2
+      author: siamo
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - dropForeignKeyConstraint:
+            baseTableName: purchases
+            constraintName: fk_purchases_on_appointment
+  - changeSet:
+      id: 1736683876048-3
+      author: siamo
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - dropForeignKeyConstraint:
+            baseTableName: purchases
+            constraintName: fk_purchases_on_product
+  - changeSet:
+      id: 1736683876048-4
+      author: siamo
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - dropForeignKeyConstraint:
+            baseTableName: purchases
+            constraintName: fk_purchases_on_review
+  - changeSet:
+      id: 1736683876048-5
+      author: siamo
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - dropForeignKeyConstraint:
+            baseTableName: purchases
+            constraintName: fk_purchases_on_service
+  - changeSet:
+      id: 1736683876048-7
+      author: siamo
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - dropTable:
+            cascadeConstraints: true
+            tableName: products
+  - changeSet:
+      id: 1736683876048-8
+      author: siamo
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - dropTable:
+            cascadeConstraints: true
+            tableName: purchases
+  - changeSet:
+      id: 1736683876048-9
+      author: siamo
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - dropColumn:
+            columnName: photo
+            tableName: users
+  - changeSet:
+      id: 1736683876048-1
+      author: siamo
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - modifyDataType:
+            columnName: user_authority
+            newDataType: VARCHAR(255)
+            tableName: user_roles
+

@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -46,7 +47,13 @@ public class AppointmentController {
             return ResponseEntity.ok(appointmentService.getUserAppointments(currentUser.getId()));
 
     }
-
-
-
+    @PostMapping("/{id}/cancel")
+    public ResponseEntity<?> cancelAppointment(@PathVariable Long id, @AuthenticationPrincipal UserDetails userDetails) {
+        try {
+            Appointment canceledAppointment = appointmentService.cancelAppointment(id, userDetails.getUsername());
+            return ResponseEntity.ok(canceledAppointment);
+        } catch (IllegalStateException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
 }

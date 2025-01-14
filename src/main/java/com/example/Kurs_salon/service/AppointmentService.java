@@ -11,7 +11,10 @@ import com.example.Kurs_salon.repository.ServiceRepository;
 import com.example.Kurs_salon.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -46,5 +49,24 @@ public class AppointmentService {
 
     public List<Appointment> getUserAppointments(Long userId) {
         return appointmentRepository.findByUserId(userId);
+    }
+    @Transactional
+    public Appointment cancelAppointment(Long appointmentId, String username) {
+        Appointment appointment = appointmentRepository.findById(appointmentId)
+                .orElseThrow(() -> new EntityNotFoundException("Appointment not found"));
+
+        if (appointment.getStatus().equals("COMPLETED")) {
+            throw new IllegalStateException("Cannot cancel a completed appointment");
+        }
+
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new EntityNotFoundException("User not found"));
+
+        if (!appointment.getUser().equals(user) && !appointment.getMaster().equals(user)) {
+            throw new AccessDeniedException("You don't have permission to cancel this appointment");
+        }
+
+        appointment.setStatus("CANCELED");
+        return appointmentRepository.save(appointment);
     }
 }

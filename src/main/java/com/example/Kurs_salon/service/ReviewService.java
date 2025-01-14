@@ -1,6 +1,5 @@
 package com.example.Kurs_salon.service;
 
-import com.example.Kurs_salon.model.Address;
 import com.example.Kurs_salon.model.Appointment;
 import com.example.Kurs_salon.model.Review;
 import com.example.Kurs_salon.repository.AppointmentRepository;
@@ -30,10 +29,6 @@ public class ReviewService {
         review.setReviewDate(LocalDateTime.now());
         return reviewRepository.save(review);
     }
-
-
-    // Остальные методы остаются без изменений
-
 
     public Review getReviewById(Long id) {
         return reviewRepository.findById(id)

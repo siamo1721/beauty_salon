@@ -14,7 +14,7 @@ import java.util.List;
 public class ReviewController {
     private final ReviewService reviewService;
 
-    @PostMapping("create")
+    @PostMapping("/create")
     public ResponseEntity<Review> createReview(@RequestBody ReviewRequest reviewRequest) {
         Review review = new Review();
         review.setRating(reviewRequest.getRating());
@@ -23,7 +23,7 @@ public class ReviewController {
         Review createdReview = reviewService.createReview(reviewRequest.getAppointmentId(), review);
         return ResponseEntity.ok(createdReview);
     }
-    
+
     @GetMapping("/{id}")
     public ResponseEntity<Review> getReview(@PathVariable Long id) {
         return ResponseEntity.ok(reviewService.getReviewById(id));
@@ -32,7 +32,7 @@ public class ReviewController {
     public ResponseEntity<List<Review>> getAllReviews() {
         return ResponseEntity.ok(reviewService.getAllReviews());
     }
-    
+
     @GetMapping("/appointment/{appointmentId}")
     public ResponseEntity<List<Review>> getReviewsByAppointment(@PathVariable Long appointmentId) {
         return ResponseEntity.ok(reviewService.getReviewsByAppointment(appointmentId));

@@ -400,19 +400,21 @@ function displayMasters(masters) {
         <h2 class="mb-4">Управление мастерами</h2>
         <button class="btn btn-success mb-3" onclick="showAddMasterForm()">Добавить мастера</button>
         <div id="masters-list">
-            ${masters.map(master => `
-                <div class="card mb-3">
-                    <div class="card-body">
-                        <h5 class="card-title">${master.firstName} ${master.lastName}</h5>
-                        <p class="card-text">
-                            Специализация: ${master.specialization}<br>
-                            Режим работы: ${master.work_schedule} 
-                        </p>
-                        <button class="btn btn-primary" onclick="editMaster(${master.id})">Редактировать</button>
-                        <button class="btn btn-danger" onclick="deleteMaster(${master.id})">Удалить</button>
-                    </div>
+            ${masters.map(master => {
+        return `
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">${master.firstName} ${master.lastName}</h5>
+                    <p class="card-text">
+                        Специализация: ${master.specialization}<br>
+                        Режим работы: ${master.workSchedule} 
+                    </p>
+                    <button class="btn btn-primary" onclick="editMaster(${master.id})">Редактировать</button>
+                    <button class="btn btn-danger" onclick="deleteMaster(${master.id})">Удалить</button>
                 </div>
-            `).join('')}
+            </div>
+        `;
+    }).join('')}
         </div>
     `;
 }
@@ -432,7 +434,7 @@ function showAddMasterForm() {
             </div>
             <div class="mb-3">
                 <label for="work_schedule" class="form-label">График работы</label>
-                <input type="text" class="form-control" id="work_schedule" placeholder="Например: ПН-ПТ 9:00-18:00" required pattern="^[А-Яа-яA-Za-z]+-[А-Яа-яA-Za-z]+ \\d{1,2}:\\d{2}-\\d{1,2}:\\d{2}$" required>
+                <input type="text" class="form-control" id="workSchedule" placeholder="Например: ПН-ПТ 9:00-18:00" required pattern="^[А-Яа-яA-Za-z]+-[А-Яа-яA-Za-z]+ \\d{1,2}:\\d{2}-\\d{1,2}:\\d{2}$" required>
             </div>
             <button type="submit" class="btn btn-primary">Добавить</button>
         </form>
@@ -443,7 +445,7 @@ function showAddMasterForm() {
         const masterData = {
             userId: document.getElementById('userId').value,
             specialization: document.getElementById('specialization').value,
-            experience: document.getElementById('work_schedule').value
+            workSchedule: document.getElementById('workSchedule').value
         };
         await addMaster(masterData);
     });
@@ -483,7 +485,7 @@ async function editMaster(masterId) {
                 </div>
                 <div class="mb-3">
                     <label for="work_schedule" class="form-label">Режим работы </label>
-                    <input type="text" class="form-control" id="work_schedule" value="${master.work_schedule}" placeholder="Например: ПН-ПТ 9:00-18:00" required pattern="^[А-Яа-яA-Za-z]+-[А-Яа-яA-Za-z]+ \\d{1,2}:\\d{2}-\\d{1,2}:\\d{2}$" required>
+                    <input type="text" class="form-control" id="workSchedule" value="${master.workSchedule}" placeholder="Например: ПН-ПТ 9:00-18:00" required pattern="^[А-Яа-яA-Za-z]+-[А-Яа-яA-Za-z]+ \\d{1,2}:\\d{2}-\\d{1,2}:\\d{2}$" required>
                 </div>
                 <button type="submit" class="btn btn-primary">Сохранить изменения</button>
             </form>
@@ -493,7 +495,7 @@ async function editMaster(masterId) {
             e.preventDefault();
             const updatedMasterData = {
                 specialization: document.getElementById('specialization').value,
-                work_schedule: document.getElementById('work_schedule').value
+                workSchedule: document.getElementById('workSchedule').value
             };
             await updateMaster(masterId, updatedMasterData);
         });

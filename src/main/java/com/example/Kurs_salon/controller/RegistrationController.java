@@ -6,8 +6,6 @@ import com.example.Kurs_salon.model.User;
 import com.example.Kurs_salon.service.UserService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -17,7 +15,6 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.Map;
@@ -51,7 +48,6 @@ public class RegistrationController {
                     SecurityContextHolder.getContext()
             );
 
-            // Извлечение ролей пользователя
             var authorities = authentication.getAuthorities();
             var roles = authorities.stream()
                     .map(authority -> authority.getAuthority())

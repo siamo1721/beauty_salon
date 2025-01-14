@@ -1,6 +1,5 @@
 package com.example.Kurs_salon.model;
 
-import com.example.Kurs_salon.model.UserAuthority;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
