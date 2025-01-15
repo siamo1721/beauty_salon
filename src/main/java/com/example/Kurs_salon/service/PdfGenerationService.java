@@ -189,17 +189,17 @@ public class PdfGenerationService {
             Appointment appointment = appointmentRepository.findById(appointmentId)
                     .orElseThrow(() -> new RuntimeException("Запись не найдена"));
 
-            // Заголовок
+
             Paragraph title = new Paragraph("Форма записи на процедуру №" + appointmentId, HEADER_FONT);
             title.setAlignment(Element.ALIGN_CENTER);
             document.add(title);
             document.add(Chunk.NEWLINE);
 
-            // Информация о записи
+
             PdfPTable table = new PdfPTable(2);
             table.setWidthPercentage(100);
 
-            // Добавляем строки в таблицу
+
             table.addCell(createCell("Дата и время:", TITLE_FONT));
             table.addCell(createCell(
                     appointment.getAppointmentDate().format(DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm")),
@@ -225,7 +225,6 @@ public class PdfGenerationService {
             table.addCell(createCell("Статус:", TITLE_FONT));
             table.addCell(createCell(appointment.getStatus(), NORMAL_FONT));
 
-            // Добавляем отзыв, если он есть
             List<Review> reviews = reviewRepository.findByAppointmentId(appointmentId);
             log.info("Found {} reviews for appointment {}", reviews.size(), appointmentId);
             if (!reviews.isEmpty()) {
@@ -245,7 +244,6 @@ public class PdfGenerationService {
 
             document.add(table);
 
-            // Подписи
             document.add(Chunk.NEWLINE);
             document.add(Chunk.NEWLINE);
 
