@@ -1,0 +1,13 @@
+@startuml
+actor Frontend
+participant "Controller (Spring)" as Controller
+participant "Service Layer" as Service
+participant "Database" as DB
+
+Frontend -> Controller : Отправка HTTP-запроса
+Controller -> Service : Вызов бизнес-логики
+Service -> DB : SQL-запрос
+DB --> Service : Результат
+Service --> Controller : Ответ
+Controller --> Frontend : HTTP-ответ
+@enduml

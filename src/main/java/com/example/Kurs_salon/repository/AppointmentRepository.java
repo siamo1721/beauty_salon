@@ -20,7 +20,6 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
             "JOIN FETCH m.user mu ")
     List<Appointment> findAllAppointmentsWithDetails();
 
-    // Суммирование доходов для мастера
     @Query("SELECT SUM(s.price) FROM Appointment a JOIN a.servicee s WHERE a.master = :master AND a.status = 'COMPLETED'")
     BigDecimal sumEarningsByMaster(@Param("master") Master master);
     List<Appointment> findByMasterIdAndAppointmentDateBetween(Long masterId, LocalDateTime start, LocalDateTime end);

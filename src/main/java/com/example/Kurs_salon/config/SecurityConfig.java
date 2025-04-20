@@ -28,7 +28,6 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(auth -> auth
-                        // Публичные ресурсы
                         .requestMatchers(
                                 "/",
                                 "/index.html",
@@ -38,19 +37,18 @@ public class SecurityConfig {
                                 "/login.html",
                                 "/register.html",
                                 "/api/auth/**",
-                                "/appointments.html"
+                                "/appointments.html",
+                                "/v3/api-docs/**",
+                                "/swagger-ui/**",
+                                "/swagger-ui.html"
                         ).permitAll()
 
-                        // Админ панель
                         .requestMatchers("/admin/**", "/api/admin/**").hasAuthority("ADMIN")
 
-                        // Системный админ
                         .requestMatchers("/system-admin/**", "/api/system-admin/**").hasAnyAuthority("SYSTEM_ADMIN","ADMIN")
 
-                        // Мастер
                         .requestMatchers("/master/**", "/api/master/**").hasAnyAuthority("MASTER", "SYSTEM_ADMIN","ADMIN")
 
-                        // Клиент
                         .requestMatchers("/profile/**").hasAnyAuthority("CLIENT","MASTER", "SYSTEM_ADMIN","ADMIN")
 
 
